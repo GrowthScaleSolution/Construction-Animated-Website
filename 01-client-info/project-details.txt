@@ -1,0 +1,56 @@
+Business Name: Shree Uniya Construction
+
+Website Type:
+Homepage demo only
+
+Objective:
+New business establishment and WhatsApp lead generation
+
+Style:
+Ultra-premium luxury construction website
+
+Color Palette:
+White, black, and grey as primary colors.
+Very limited accent colors only where needed.
+
+Hero Direction:
+Stock-style construction video background.
+Clean one-line punchy headline.
+Interactive text/buttons.
+Scroll-based storytelling.
+Lightweight 3D/interactive overlays only where useful.
+
+Animation Direction:
+Premium, smooth, award-style, not childish.
+Short storytelling section, not too long.
+
+Special Requirements:
+Civil construction popup.
+Shovel-style icons for lists and pointers.
+Cement mixer themed loader.
+Subtle sound interaction with sound disabled by default.
+WhatsApp direct redirects from service CTAs.
+Location/contact section.
+
+Contact Details:
+WhatsApp: +91 97658 02900
+Location: Nallasopara, Mumbai
+
+Logo:
+No logo available. Use temporary premium wordmark logo with full name “Shree Uniya Construction”.
+
+Social Media:
+No social links available. Do not show broken social links.
+
+Tech Stack:
+Next.js App Router, TypeScript, Tailwind CSS, Framer Motion, React Three Fiber, Drei, GSAP, Lenis, Lucide React.
+
+Database:
+No database for this demo.
+
+Backend:
+No backend for this demo.
+
+Important Rules:
+Do not hallucinate fake experience, project counts, testimonials, certifications, awards, or exact address.
+Ask before assuming missing information.
