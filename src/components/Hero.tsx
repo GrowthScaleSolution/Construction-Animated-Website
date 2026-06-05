@@ -10,6 +10,7 @@ export const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [isVideoError, setIsVideoError] = useState(false);
 
   // Track cursor coordinates
   const handleMouseMove = (e: React.MouseEvent) => {
@@ -42,12 +43,14 @@ export const Hero = () => {
         muted
         loop
         playsInline
+        preload="metadata"
         onPlay={() => setIsVideoLoaded(true)}
+        onError={() => setIsVideoError(true)}
         className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 opacity-15 grayscale ${
-          isVideoLoaded ? 'opacity-15' : 'opacity-0'
+          isVideoLoaded && !isVideoError ? 'opacity-15' : 'opacity-0'
         }`}
       >
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-crane-operating-on-a-construction-site-41223-large.mp4" type="video/mp4" />
+        <source src="/construction-hero-video-muted.mp4" type="video/mp4" />
       </video>
 
       {/* 2. Interactive SVG Fallback / Drafting Grid Overlay */}
