@@ -42,8 +42,8 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
         isScrolled
-          ? 'bg-obsidian/90 border-white/5 py-4 backdrop-blur-md'
-          : 'bg-transparent border-transparent py-6'
+          ? 'bg-obsidian/90 border-white/5 py-2.5 sm:py-4 backdrop-blur-md'
+          : 'bg-transparent border-transparent py-4 sm:py-6'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex justify-between items-center gap-3">

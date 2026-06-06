@@ -10,9 +10,11 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [rotateDeg, setRotateDeg] = useState({ rX: 0, rY: 0 });
+  const lightOverlayRef = useRef<HTMLDivElement>(null);
+  const rotationCardRef = useRef<HTMLDivElement>(null);
+  const qaCardRef = useRef<HTMLDivElement>(null);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const [hasVideoError, setHasVideoError] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
@@ -35,8 +37,15 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     }
 
     requestRef.current = requestAnimationFrame(() => {
-      setCoords({ x: parseFloat(x.toFixed(1)), y: parseFloat(y.toFixed(1)) });
-      setRotateDeg({ rX, rY });
+      if (lightOverlayRef.current) {
+        lightOverlayRef.current.style.background = `radial-gradient(circle 600px at ${x.toFixed(1)}px ${y.toFixed(1)}px, rgba(255, 200, 10, 0.08), transparent 60%)`;
+      }
+      if (rotationCardRef.current) {
+        rotationCardRef.current.style.transform = `perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg)`;
+      }
+      if (qaCardRef.current) {
+        qaCardRef.current.style.transform = `translate(${rY * 1.5}px, ${-rX * 1.5}px)`;
+      }
     });
   };
 
@@ -53,7 +62,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     if (!video) return;
 
     // Direct configuration settings
-    video.preload = "metadata";
+    video.preload = "auto";
 
     // Intersection Observer to ensure video autoplays safely when visible, and pauses when scrolled out of view
     const observer = new IntersectionObserver(
@@ -65,6 +74,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
               playPromise
                 .then(() => {
                   setIsVideoLoaded(true);
+                  setHasVideoError(false);
                 })
                 .catch((error) => {
                   console.log("Hero video autoplay failed or was prevented:", error);
@@ -88,37 +98,61 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     };
   }, []);
 
-  const { scrollY } = useScroll();
-  const videoYTransform = useTransform(scrollY, [0, 1000], [0, 250]);
-  const videoY = isTouch ? 0 : videoYTransform;
+  const videoY = 0;
 
   return (
     <section
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-[100svh] bg-charcoal-dark text-white flex flex-col justify-between overflow-hidden pt-24 pb-8 px-4 xs:px-6 md:pt-32 md:pb-12 md:px-12 select-none"
+      className="relative min-h-[100svh] bg-charcoal-dark text-white flex flex-col justify-between overflow-hidden pt-20 pb-8 px-4 xs:px-6 md:pt-32 md:pb-12 md:px-12 select-none"
     >
-      <motion.div 
-        style={{ y: videoY }}
-        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
+      <div 
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none bg-charcoal-dark"
       >
+        {/* Background Fallback (Premium Dark Construction Gradient / Canvas) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#121212] via-[#090909] to-[#070707] z-0" />
+
+        {/* Poster Fallback Image */}
+        <div 
+          className={`absolute inset-0 w-full h-full z-10 bg-cover bg-center transition-opacity duration-1000 ${
+            hasVideoError || !isVideoLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{ backgroundImage: 'url("/images/hero-video-poster.png")' }}
+        />
+
         <video
           ref={videoRef}
           autoPlay
-          muted
           loop
           playsInline
-          preload="metadata"
-          onPlay={() => setIsVideoLoaded(true)}
-          onCanPlay={() => setIsVideoLoaded(true)}
-          onLoadedData={() => setIsVideoLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            isVideoLoaded ? 'opacity-100' : 'opacity-0'
+          preload="auto"
+          poster="/images/hero-video-poster.png"
+          muted={true}
+          controls={false}
+          aria-hidden="true"
+          onPlay={() => {
+            setIsVideoLoaded(true);
+            setHasVideoError(false);
+          }}
+          onCanPlay={() => {
+            setIsVideoLoaded(true);
+            setHasVideoError(false);
+          }}
+          onLoadedData={() => {
+            setIsVideoLoaded(true);
+            setHasVideoError(false);
+          }}
+          onError={() => {
+            console.log("Hero background video failed to load, triggering fallback.");
+            setHasVideoError(true);
+          }}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-20 ${
+            isVideoLoaded && !hasVideoError ? 'opacity-100' : 'opacity-0'
           }`}
         >
           <source src="/videos/construction-hero-video-muted.mp4" type="video/mp4" />
         </video>
-      </motion.div>
+      </div>
 
       {/* Gradient Overlays for Readability and Vignette */}
       {/* Base overlay for general text contrast */}
@@ -135,14 +169,15 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
       
       {!isTouch && (
         <div 
+          ref={lightOverlayRef}
           className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 mix-blend-screen"
-          style={{ background: `radial-gradient(circle 600px at ${coords.x}px ${coords.y}px, rgba(255, 200, 10, 0.08), transparent 60%)` }}
+          style={{ background: 'radial-gradient(circle 600px at 50% 50%, rgba(255, 200, 10, 0.08), transparent 60%)' }}
         />
       )}
 
-      <motion.div 
+      <div 
+        ref={rotationCardRef}
         style={!isTouch ? {
-          transform: `perspective(1000px) rotateX(${rotateDeg.rX}deg) rotateY(${rotateDeg.rY}deg)`,
           transformStyle: 'preserve-3d',
         } : undefined}
         className="relative z-10 w-full max-w-7xl mx-auto flex-grow flex flex-col justify-center transition-transform duration-300 ease-out mt-4 md:mt-0"
@@ -150,7 +185,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 items-center">
           
           <div className="lg:col-span-7 flex flex-col items-start gap-3.5 md:gap-5 text-left">
-            <span className="text-[9px] xs:text-[10px] md:text-xs font-semibold tracking-[0.2em] text-gold uppercase">
+            <span className="text-[8.5px] xs:text-[10px] md:text-xs font-semibold tracking-[0.2em] text-gold uppercase">
               Civil & Building Construction
             </span>
             
@@ -159,7 +194,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
             </Heading>
  
             <p className="text-zinc-200 text-xs sm:text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-0.5 md:mt-2">
-              Premium structural execution, concrete framing, and foundation engineering. Operating under strict, code-compliant parameters in Nallasopara, Mumbai.
+              Premium structural execution, concrete framing, and foundation engineering.<span className="hidden sm:inline"> Operating under strict, code-compliant parameters in Nallasopara, Mumbai.</span>
             </p>
 
             {/* Mobile CTA Buttons (placed here for better visual rhythm on small screens) */}
@@ -178,31 +213,30 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
           </div>
 
           <div className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0">
-            <motion.div 
-              style={!isTouch ? { x: rotateDeg.rY * 1.5, y: -rotateDeg.rX * 1.5 } : undefined}
-              whileHover={{ scale: 1.02 }}
-              className="relative bg-obsidian/85 border border-white/15 p-4 xs:p-5 sm:p-6 md:p-8 backdrop-blur-xl w-full max-w-md overflow-hidden group hover:bg-black/95 hover:border-gold/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/75"
+            <div 
+              ref={qaCardRef}
+              className="relative bg-black/90 md:bg-obsidian/85 border border-white/10 md:border-white/15 p-3.5 xs:p-4 sm:p-6 md:p-8 backdrop-blur-xl w-full max-w-md overflow-hidden group hover:bg-black/95 hover:border-gold/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/75 hover:scale-[1.02] rounded-sm"
             >
               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
 
-              <div className="flex flex-col gap-3.5 relative z-10">
+              <div className="flex flex-col gap-2.5 sm:gap-3.5 relative z-10">
                 <div className="flex justify-between items-start">
                   <span className="text-[9px] xs:text-[10px] font-semibold text-gold uppercase tracking-widest">Quality Assurance</span>
                   <ShieldCheck className="w-4 h-4 text-gold/60 group-hover:text-gold transition-colors duration-300" />
                 </div>
                 
-                <h4 className="font-display font-semibold text-white text-sm xs:text-base md:text-lg tracking-wide uppercase">
+                <h4 className="font-display font-semibold text-white text-[13px] xs:text-sm md:text-lg tracking-wide uppercase">
                   Structural Integrity
                 </h4>
                 
-                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
+                <p className="text-[11px] sm:text-xs md:text-sm text-zinc-300 leading-relaxed font-light">
                   Every building core is cast to support complex vertical load stresses, ensuring lasting durability and safety.
                 </p>
 
-                <div className="flex flex-col gap-2.5 mt-1 pt-3 border-t border-white/10 text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-400 tracking-wide uppercase">
+                <div className="flex flex-col gap-2 sm:gap-2.5 mt-0.5 pt-2 sm:pt-3 border-t border-white/10 text-[8.5px] xs:text-[10px] sm:text-[11px] text-zinc-400 tracking-wide uppercase">
                   <div className="flex justify-between">
                     <span>Seismic Standard</span>
                     <span className="text-white font-medium">IS:1893</span>
@@ -213,13 +247,13 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
           
         </div>
-      </motion.div>
+      </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-5 md:pt-8 gap-5 mt-6 md:mt-8">
+      <div className="relative z-10 w-full max-w-7xl mx-auto hidden md:flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-5 md:pt-8 gap-5 mt-6 md:mt-8">
         
         <div className="flex flex-col sm:flex-row gap-3.5 sm:gap-6 lg:gap-10 text-xs w-full overflow-x-auto no-scrollbar pb-1 md:pb-0">
           <div className="flex items-center gap-3 shrink-0 group cursor-default">

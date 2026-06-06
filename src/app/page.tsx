@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Lenis from 'lenis';
 import Preloader from '@/components/Preloader';
 import LeadPopup from '@/components/LeadPopup';
@@ -21,8 +21,8 @@ import { playClickSound, preloadAudioFiles, prewarmAudio } from '@/lib/sound';
 export default function Home() {
   const [isMuted, setIsMuted] = useState(true);
   const [isCivilModalOpen, setIsCivilModalOpen] = useState(false);
-  const [scrollDepth, setScrollDepth] = useState(0);
   const [isPreloaded, setIsPreloaded] = useState(false);
+  const scrollMeterFillRef = useRef<HTMLDivElement>(null);
 
   // Handle hash scrolling after preloader finishes
   useEffect(() => {
@@ -48,22 +48,26 @@ export default function Home() {
     if (isTouch) return;
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.5,
     });
 
+    let rafId: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
-    return () => lenis.destroy();
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   // Synchronize sound settings with localStorage post-hydration
@@ -87,7 +91,9 @@ export default function Home() {
         window.requestAnimationFrame(() => {
           const docHeight = document.documentElement.scrollHeight - window.innerHeight;
           const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-          setScrollDepth(progress);
+          if (scrollMeterFillRef.current) {
+            scrollMeterFillRef.current.style.height = `${progress}%`;
+          }
           ticking = false;
         });
         ticking = true;
@@ -113,7 +119,7 @@ export default function Home() {
       <Navbar isMuted={isMuted} onToggleSound={handleToggleSound} />
 
       <div className="scroll-meter-track hidden md:block z-40">
-        <div className="scroll-meter-fill transition-all duration-150" style={{ height: `${scrollDepth}%` }} />
+        <div ref={scrollMeterFillRef} className="scroll-meter-fill transition-all duration-150" style={{ height: '0%' }} />
       </div>
 
       <main className="flex-grow flex flex-col">

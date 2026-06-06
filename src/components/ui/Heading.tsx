@@ -22,7 +22,7 @@ export const Heading: React.FC<HeadingProps> = ({
   const renderTag = () => {
     const classNames = cn(
       "text-white uppercase font-display",
-      level === 1 && "text-[clamp(2.1rem,7vw,4.5rem)] font-extrabold tracking-tighter leading-[1.02]",
+      level === 1 && "text-[clamp(1.8rem,6vw,4.5rem)] font-extrabold tracking-tighter leading-[1.02]",
       level === 2 && "text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.05]",
       level === 3 && "text-xl md:text-2xl font-bold tracking-tight leading-snug",
       level === 4 && "text-xs md:text-sm font-semibold tracking-[0.2em] text-white/95",
