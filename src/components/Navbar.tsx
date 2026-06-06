@@ -5,6 +5,7 @@ import { Volume2, VolumeX, Menu, X } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
 import Button from '@/components/ui/Button';
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from '@/lib/whatsapp';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavbarProps {
   isMuted: boolean;
@@ -41,7 +42,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b ${
         isScrolled
-          ? 'bg-obsidian/80 border-white/5 py-4 backdrop-blur-md'
+          ? 'bg-obsidian/90 border-white/5 py-4 backdrop-blur-md'
           : 'bg-transparent border-transparent py-6'
       }`}
     >
@@ -119,31 +120,39 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
       </div>
 
       {/* Mobile Drawer */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-charcoal-dark border-b border-white/10 flex flex-col p-6 gap-6 font-sans text-xs tracking-widest uppercase">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-arch-grey hover:text-gold py-2 transition-colors duration-300 border-b border-white/5"
-            >
-              {link.name}
-            </a>
-          ))}
-          <a
-            href={getWhatsAppLink(WHATSAPP_MESSAGES.general)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="mt-2"
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:hidden absolute top-full left-0 w-full bg-charcoal-dark border-b border-white/10 flex flex-col p-6 gap-6 font-sans text-xs tracking-widest uppercase overflow-hidden"
           >
-            <Button variant="accent" className="w-full">
-              Get Estimate (WhatsApp)
-            </Button>
-          </a>
-        </div>
-      )}
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-arch-grey hover:text-gold py-2 transition-colors duration-300 border-b border-white/5"
+              >
+                {link.name}
+              </a>
+            ))}
+            <a
+              href={getWhatsAppLink(WHATSAPP_MESSAGES.general)}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="mt-2"
+            >
+              <Button variant="accent" className="w-full">
+                Get Estimate (WhatsApp)
+              </Button>
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };

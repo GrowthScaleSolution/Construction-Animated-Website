@@ -1,92 +1,109 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { startMixerSound, stopMixerSound } from '@/lib/sound';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const Preloader = () => {
+export const Preloader = ({ isMuted }: { isMuted: boolean }) => {
   const [progress, setProgress] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setIsVisible(false), 600); // Wait for fade out
-          return 100;
-        }
-        return prev + Math.floor(Math.random() * 8) + 2; // Increments of 2-9
-      });
-    }, 100);
+    // Start the heavy machinery hum
+    startMixerSound(isMuted);
 
-    return () => clearInterval(interval);
-  }, []);
+    const startTime = Date.now();
+    const duration = 2200;
+
+    const updateProgress = () => {
+      const elapsed = Date.now() - startTime;
+      const currentProgress = Math.min((elapsed / duration) * 100, 100);
+      
+      setProgress(currentProgress);
+
+      if (currentProgress < 100) {
+        requestAnimationFrame(updateProgress);
+      } else {
+        setTimeout(() => {
+          stopMixerSound();
+          setIsLoading(false);
+        }, 300);
+      }
+    };
+
+    requestAnimationFrame(updateProgress);
+
+    return () => {
+      stopMixerSound();
+    };
+  }, [isMuted]);
 
   return (
     <AnimatePresence>
-      {isVisible && (
+      {isLoading && (
         <motion.div
-          initial={{ opacity: 1 }}
-          exit={{ opacity: 0, y: -40 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 bg-obsidian z-9999 flex flex-col items-center justify-center select-none"
+          initial={{ y: 0 }}
+          exit={{ y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
+          className="fixed inset-0 z-[100] bg-obsidian flex flex-col items-center justify-center font-mono overflow-hidden touch-none"
         >
-          {/* Construction-style coordinate markings */}
-          <div className="absolute top-8 left-8 font-mono text-[9px] text-gold/30">
-            SYSTEM_LOADING // INITIALIZING
-          </div>
-          <div className="absolute bottom-8 right-8 font-mono text-[9px] text-gold/30">
-            SHREE UNIYA CONSTRUCTION
-          </div>
+          {/* Subtle grid background */}
+          <div className="absolute inset-0 z-0 opacity-10 construction-grid" />
 
-          <div className="flex flex-col items-center gap-6">
-            {/* Cement Mixer SVG Loader */}
-            <div className="relative w-16 h-16 flex items-center justify-center">
-              {/* Rotating drum */}
-              <motion.svg
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 2.5, ease: "linear" }}
-                className="w-12 h-12 text-gold"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                {/* Custom simplified premium cement mixer drum representation */}
-                <path d="M12 3a9 9 0 0 1 9 9h-3a6 6 0 0 0-6-6V3z" />
-                <path d="M12 21a9 9 0 0 1-9-9h3a6 6 0 0 0 6 6v3z" />
-                <circle cx="12" cy="12" r="3" />
-                <line x1="6" y1="12" x2="2" y2="12" />
-                <line x1="18" y1="12" x2="22" y2="12" />
-              </motion.svg>
-              
-              {/* Stand / Frame */}
-              <svg
-                className="absolute inset-0 w-16 h-16 text-white/20 pointer-events-none"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-              >
-                <path d="M4 20l4-6M20 20l-4-6M12 14v6M8 20h8" />
+          {/* Loader Content */}
+          <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-xs px-6">
+            
+            {/* Cement Mixer CAD Blueprint Animation */}
+            <div className="w-24 h-24 relative flex items-center justify-center">
+              <svg viewBox="0 0 100 100" className="w-full h-full text-white/20">
+                {/* Outer drafting coordinates ring */}
+                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 4" className="opacity-40" />
+                
+                {/* Outer rotating gear / mixer ring */}
+                <motion.g
+                  animate={{ rotate: 360 }}
+                  transition={{ repeat: Infinity, duration: 10, ease: "linear" }}
+                  style={{ transformOrigin: '50px 50px' }}
+                >
+                  <circle cx="50" cy="50" r="32" fill="none" stroke="currentColor" strokeWidth="1" />
+                  {/* Mixer teeth */}
+                  <path d="M50 18 L50 14 M50 82 L50 86 M18 50 L14 50 M82 50 L86 50 M27.4 27.4 L24.5 24.5 M72.6 72.6 L75.5 75.5 M27.4 72.6 L24.5 75.5 M72.6 27.4 L75.5 24.5" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                </motion.g>
+                
+                {/* Reverse rotating inner mixer drum core */}
+                <motion.g
+                  animate={{ rotate: -360 }}
+                  transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+                  style={{ transformOrigin: '50px 50px' }}
+                >
+                  <polygon points="50,22 74.2,36 74.2,64 50,78 25.8,64 25.8,36" fill="none" stroke="#FFC80A" strokeWidth="1.5" />
+                  <circle cx="50" cy="50" r="12" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="3 2" className="opacity-60" />
+                </motion.g>
+                
+                {/* Central static axis marker */}
+                <circle cx="50" cy="50" r="3" fill="#FFC80A" />
               </svg>
+              <div className="absolute text-[8px] text-white/45 font-mono tracking-wider font-medium mt-1">CAD_SYS</div>
             </div>
 
-            {/* Percentage counter */}
-            <div className="flex flex-col items-center gap-1 font-display">
-              <span className="text-3xl font-bold tracking-widest text-white">
-                {Math.min(progress, 100)}%
-              </span>
-              <span className="text-[9px] uppercase tracking-[0.4em] text-gold font-medium">
-                structural load check
-              </span>
+            {/* Loading Bar */}
+            <div className="w-full flex flex-col gap-2">
+              <div className="flex justify-between text-[10px] text-arch-grey tracking-[0.2em] uppercase">
+                <span>Initializing Assets</span>
+                <span className="text-gold">{Math.round(progress)}%</span>
+              </div>
+              <div className="h-[2px] w-full bg-white/10 relative overflow-hidden">
+                <div 
+                  className="absolute top-0 left-0 h-full bg-gold transition-all duration-75 ease-linear"
+                  style={{ width: `${progress}%` }}
+                />
+              </div>
             </div>
+            
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
 };
+
 export default Preloader;

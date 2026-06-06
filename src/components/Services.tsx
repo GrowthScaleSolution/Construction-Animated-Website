@@ -9,9 +9,10 @@ import { getWhatsAppLink, WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
 interface ServicesProps {
   onOpenModal: () => void;
+  isMuted?: boolean;
 }
 
-export const Services: React.FC<ServicesProps> = ({ onOpenModal }) => {
+export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true }) => {
   const services = [
     {
       id: '01',
@@ -55,7 +56,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal }) => {
   ];
 
   return (
-    <section id="services" className="relative py-24 bg-charcoal-dark/20 border-t border-white/5">
+    <section id="services" className="relative py-24 md:py-36 bg-charcoal-dark/20 border-t border-white/5">
       {/* Structural layout decorations */}
       <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
         SECTION_02 // PORTFOLIO // CORE_SERVICES
@@ -68,7 +69,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal }) => {
             Civil Construction Services
           </Heading>
           
-          <Button variant="outline" className="px-5 py-3 text-[10px]" onClick={onOpenModal}>
+          <Button variant="outline" className="px-5 py-3 text-[10px]" onClick={onOpenModal} isMuted={isMuted} soundType="click">
             Review Technical Specs
           </Button>
         </div>
@@ -94,7 +95,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal }) => {
                 <ul className="flex flex-col gap-3.5 mt-2">
                   {svc.bullets.map((bullet, idx) => (
                     <li key={idx} className="flex items-start gap-3 text-xs text-arch-grey leading-relaxed">
-                      <ShovelIcon className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
+                      <ShovelIcon className="w-3.5 h-3.5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -109,7 +110,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal }) => {
                   rel="noopener noreferrer"
                   className="w-full block"
                 >
-                  <Button variant="secondary" className="w-full text-[10px] py-3">
+                  <Button variant="secondary" className="w-full text-[10px] py-3" isMuted={isMuted} soundType="cta">
                     {svc.btnText}
                   </Button>
                 </a>

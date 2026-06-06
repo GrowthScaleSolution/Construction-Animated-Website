@@ -1,15 +1,33 @@
 'use client';
 
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
 import Heading from '@/components/ui/Heading';
 import Card from '@/components/ui/Card';
+import { playClickSound } from '@/lib/sound';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Lazy load heavy 3D asset for performance
+const StructuralGirder3D = dynamic(() => import('@/components/ui/StructuralGirder3D'), {
+  ssr: false,
+  loading: () => <div className="w-full h-full flex items-center justify-center font-mono text-[8px] text-white/30 tracking-widest uppercase">LOADING_3D_ASSET...</div>
+});
 
 type Layer = 'foundation' | 'framing' | 'masonry';
 
-export const InteractiveBlueprint = () => {
+interface InteractiveBlueprintProps {
+  isMuted: boolean;
+}
+
+export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMuted }) => {
   const [activeLayer, setActiveLayer] = useState<Layer>('foundation');
 
-  // Layer details
+  const handleLayerChange = (layerId: Layer) => {
+    if (activeLayer === layerId) return;
+    setActiveLayer(layerId);
+    playClickSound(isMuted);
+  };
+
   const layers = [
     {
       id: 'foundation' as Layer,
@@ -37,14 +55,12 @@ export const InteractiveBlueprint = () => {
   const currentLayer = layers.find((l) => l.id === activeLayer)!;
 
   return (
-    <section id="blueprints" className="relative py-24 bg-obsidian border-t border-white/5 overflow-hidden">
-      {/* Drafting metadata */}
-      <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
+    <section id="blueprints" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden">
+      <div className="absolute top-10 left-6 md:left-10 text-[9px] font-mono text-white/5 uppercase select-none">
         SECTION_03 // CAD_ENGINE // BLUEPRINTS
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
-        {/* Header */}
+      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16">
         <div className="flex flex-col gap-4">
           <Heading level={2} sectionTag="03 // ARCHITECTURAL SCHEMATICS">
             Interactive Blueprint Viewer
@@ -54,97 +70,125 @@ export const InteractiveBlueprint = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Side: Interactive Buttons and Spec Sheet */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            {/* Buttons */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1">
             <div className="flex flex-col gap-3 font-mono text-xs">
               {layers.map((layer) => (
                 <button
                   key={layer.id}
-                  onClick={() => setActiveLayer(layer.id)}
-                  className={`w-full text-left p-4 border transition-all duration-300 cursor-pointer flex justify-between items-center ${
+                  onClick={() => handleLayerChange(layer.id)}
+                  className={`w-full text-left p-4 border transition-all duration-300 cursor-pointer flex justify-between items-center min-h-[50px] ${
                     activeLayer === layer.id
                       ? 'border-gold text-gold bg-gold/5'
                       : 'border-white/10 text-arch-grey hover:border-white/30 hover:text-white'
                   }`}
                 >
                   <span>{layer.label}</span>
-                  <span className="text-[10px] opacity-60">
-                    {activeLayer === layer.id ? '[ ACTIVE ]' : '[ SHOW ]'}
+                  <span className="text-[9px] font-mono tracking-wider">
+                    {activeLayer === layer.id ? '● ACTIVE' : '○ VIEW'}
                   </span>
                 </button>
               ))}
             </div>
 
-            {/* Spec Sheet Card */}
             <Card hoverEffect={false} className="border-white/10 bg-charcoal-light/10">
-              <div className="flex flex-col gap-4">
-                <span className="text-xs font-mono text-gold uppercase tracking-widest">[ LAYER_DETAILS ]</span>
-                <p className="text-sm text-arch-grey leading-relaxed">{currentLayer.spec}</p>
-                <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-white/5 text-xs font-mono">
-                  <div className="flex justify-between">
-                    <span className="text-white/40">CALIBRATED THICKNESS</span>
-                    <span className="text-white">{currentLayer.thickness}</span>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentLayer.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col gap-4"
+                >
+                  <span className="text-[10px] font-mono text-gold uppercase tracking-[0.2em]">[ LAYER_DETAILS ]</span>
+                  <p className="text-sm text-arch-grey leading-relaxed font-light">{currentLayer.spec}</p>
+                  
+                  <div className="border border-white/5 bg-obsidian/40 h-48 relative overflow-hidden mt-2 rounded-sm touch-none">
+                    <StructuralGirder3D />
+                    <span className="absolute bottom-2 left-2 text-[8px] font-mono text-gold/40 z-20 pointer-events-none">
+                      3D_FRAME // ORBIT_ACTIVE
+                    </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-white/40">REBAR PARAMETERS</span>
-                    <span className="text-white">{currentLayer.reinforcement}</span>
+
+                  <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-white/5 text-[10px] sm:text-xs font-mono">
+                    <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0">
+                      <span className="text-white/40 font-light">CALIBRATED THICKNESS</span>
+                      <span className="text-white">{currentLayer.thickness}</span>
+                    </div>
+                    <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0 mt-2 sm:mt-0">
+                      <span className="text-white/40 font-light">REBAR PARAMETERS</span>
+                      <span className="text-white">{currentLayer.reinforcement}</span>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </motion.div>
+              </AnimatePresence>
             </Card>
           </div>
 
-          {/* Right Side: Visual Blueprint Rendering */}
-          <div className="lg:col-span-7 flex justify-center items-center">
-            <div className="relative w-full max-w-[500px] aspect-square bg-charcoal-dark border border-white/10 blueprint-grid p-8 flex items-center justify-center">
-              {/* Corner crosshairs */}
+          <div className="lg:col-span-7 flex justify-center items-center order-1 lg:order-2">
+            <div className="relative w-full max-w-[500px] aspect-square bg-charcoal-dark border border-white/10 blueprint-grid p-4 sm:p-8 flex items-center justify-center">
               <div className="absolute top-4 left-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
               <div className="absolute top-4 right-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
               <div className="absolute bottom-4 left-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
               <div className="absolute bottom-4 right-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
 
-              {/* Vector Blueprint Drawing */}
               <svg className="w-full h-full text-white/25" viewBox="0 0 200 200" fill="none">
-                {/* Structural axes grids */}
                 <line x1="20" y1="40" x2="180" y2="40" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
                 <line x1="20" y1="100" x2="180" y2="100" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
                 <line x1="20" y1="160" x2="180" y2="160" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
-                
                 <line x1="40" y1="20" x2="40" y2="180" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
                 <line x1="100" y1="20" x2="100" y2="180" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
                 <line x1="160" y1="20" x2="160" y2="180" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
 
-                {/* Layer 01: Foundations (Raft slabs) */}
-                <g className={`transition-all duration-500 ${activeLayer === 'foundation' ? 'stroke-gold opacity-100' : 'stroke-white/10 opacity-30'}`} strokeWidth="1.5">
-                  <rect x="30" y="30" width="60" height="60" />
-                  <rect x="110" y="30" width="60" height="60" />
-                  <rect x="30" y="110" width="140" height="60" />
-                </g>
+                <motion.g
+                  initial={false}
+                  animate={{ opacity: activeLayer === 'foundation' ? 1 : 0.3 }}
+                  className={`${activeLayer === 'foundation' ? 'stroke-gold' : 'stroke-white/10'}`}
+                  strokeWidth="1.5"
+                >
+                  <motion.rect x="30" y="30" width="60" height="60" initial={{ pathLength: 0 }} animate={{ pathLength: activeLayer === 'foundation' ? 1 : 1 }} transition={{ duration: 1, ease: "easeOut" }} />
+                  <motion.rect x="110" y="30" width="60" height="60" initial={{ pathLength: 0 }} animate={{ pathLength: activeLayer === 'foundation' ? 1 : 1 }} transition={{ duration: 1, ease: "easeOut" }} />
+                  <motion.rect x="30" y="110" width="140" height="60" initial={{ pathLength: 0 }} animate={{ pathLength: activeLayer === 'foundation' ? 1 : 1 }} transition={{ duration: 1, ease: "easeOut" }} />
+                </motion.g>
 
-                {/* Layer 02: Column Framing (RCC columns) */}
-                <g className={`transition-all duration-500 ${activeLayer === 'framing' ? 'fill-gold opacity-100' : 'fill-white/10 opacity-30'}`}>
-                  <rect x="37" y="37" width="6" height="6" />
-                  <rect x="97" y="37" width="6" height="6" />
-                  <rect x="157" y="37" width="6" height="6" />
-                  <rect x="37" y="97" width="6" height="6" />
-                  <rect x="97" y="97" width="6" height="6" />
-                  <rect x="157" y="97" width="6" height="6" />
-                  <rect x="37" y="157" width="6" height="6" />
-                  <rect x="97" y="157" width="6" height="6" />
-                  <rect x="157" y="157" width="6" height="6" />
-                </g>
+                <motion.g
+                  initial={false}
+                  animate={{ opacity: activeLayer === 'framing' ? 1 : 0.3 }}
+                  className={`${activeLayer === 'framing' ? 'fill-gold' : 'fill-white/10'}`}
+                >
+                  {[37, 97, 157].map((x) => 
+                    [37, 97, 157].map((y) => (
+                      <motion.rect key={`${x}-${y}`} x={x} y={y} width="6" height="6"
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: activeLayer === 'framing' ? 1 : 0.3 }}
+                        transition={{ duration: 0.5, delay: activeLayer === 'framing' ? (x+y)/1000 : 0 }}
+                        style={{ transformOrigin: `${x+3}px ${y+3}px` }}
+                      />
+                    ))
+                  )}
+                </motion.g>
 
-                {/* Layer 03: Wall Masonry (Brick lines) */}
-                <g className={`transition-all duration-500 ${activeLayer === 'masonry' ? 'stroke-gold opacity-100' : 'stroke-white/10 opacity-30'}`} strokeWidth="3">
-                  {/* Connect columns */}
-                  <line x1="40" y1="40" x2="160" y2="40" />
-                  <line x1="40" y1="40" x2="40" y2="160" />
-                  <line x1="160" y1="40" x2="160" y2="160" />
-                  <line x1="40" y1="100" x2="160" y2="100" />
-                  <line x1="40" y1="160" x2="160" y2="160" />
-                </g>
+                <motion.g
+                  initial={false}
+                  animate={{ opacity: activeLayer === 'masonry' ? 1 : 0.3 }}
+                  className={`${activeLayer === 'masonry' ? 'stroke-gold' : 'stroke-white/10'}`}
+                  strokeWidth="3"
+                >
+                  {[
+                    { x1: 40, y1: 40, x2: 160, y2: 40 },
+                    { x1: 40, y1: 40, x2: 40, y2: 160 },
+                    { x1: 160, y1: 40, x2: 160, y2: 160 },
+                    { x1: 40, y1: 100, x2: 160, y2: 100 },
+                    { x1: 40, y1: 160, x2: 160, y2: 160 }
+                  ].map((line, i) => (
+                    <motion.line key={i} {...line}
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: activeLayer === 'masonry' ? 1 : 1 }}
+                      transition={{ duration: 0.8, delay: i * 0.1, ease: "easeOut" }}
+                    />
+                  ))}
+                </motion.g>
               </svg>
             </div>
           </div>

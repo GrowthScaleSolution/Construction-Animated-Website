@@ -28,7 +28,7 @@ export const Process = () => {
   ];
 
   return (
-    <section id="process" className="relative py-24 bg-obsidian border-t border-white/5">
+    <section id="process" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5">
       {/* CAD line aesthetics */}
       <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
         SECTION_05 // WORKFLOW // PROCESS
@@ -55,7 +55,7 @@ export const Process = () => {
               )}
               
               {/* Step indicator */}
-              <div className="w-10 h-10 border border-white/10 group-hover:border-gold/50 bg-charcoal-dark flex items-center justify-center font-mono text-xs text-gold z-10 transition-colors duration-500">
+              <div className="w-10 h-10 border border-white/10 group-hover:border-gold text-white/60 group-hover:text-gold bg-charcoal-dark flex items-center justify-center font-mono text-xs z-10 transition-colors duration-500">
                 {step.num}
               </div>
 

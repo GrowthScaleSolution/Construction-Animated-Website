@@ -34,7 +34,7 @@ export const Showcase = () => {
   ];
 
   return (
-    <section id="showcase" className="relative py-24 bg-charcoal-dark/20 border-t border-white/5">
+    <section id="showcase" className="relative py-24 md:py-36 bg-charcoal-dark/20 border-t border-white/5">
       {/* Decorative details */}
       <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
         SECTION_06 // PROJECTS // SHOWCASE
@@ -58,7 +58,7 @@ export const Showcase = () => {
               <div className="flex flex-col gap-5">
                 <div className="flex justify-between items-start font-mono text-[9px] text-white/20 uppercase">
                   <span>PROJECT // {proj.id}</span>
-                  <span className="text-gold font-semibold">{proj.status}</span>
+                  <span className="text-white/40 group-hover:text-gold/90 transition-colors duration-500 font-semibold">{proj.status}</span>
                 </div>
                 
                 <div className="flex flex-col gap-1">
@@ -69,7 +69,7 @@ export const Showcase = () => {
                 </div>
 
                 <div className="flex items-center gap-2 text-xs text-arch-grey mt-2">
-                  <MapPin className="w-3.5 h-3.5 text-gold shrink-0" />
+                  <MapPin className="w-3.5 h-3.5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0" />
                   <span>{proj.location}</span>
                 </div>
 

@@ -2,12 +2,18 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Compass, ArrowRight } from 'lucide-react';
+import { X, Calendar, ArrowRight, Compass } from 'lucide-react';
 import Heading from '@/components/ui/Heading';
 import Button from '@/components/ui/Button';
 import { getWhatsAppLink } from '@/lib/whatsapp';
+import ShovelIcon from '@/components/ui/ShovelIcon';
+import { playPopupOpenSound, playCTAConfirmSound } from '@/lib/sound';
 
-export const LeadPopup = () => {
+interface LeadPopupProps {
+  isMuted: boolean;
+}
+
+export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -24,8 +30,19 @@ export const LeadPopup = () => {
     }
   }, []);
 
+  // Play sound when the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      playPopupOpenSound(isMuted);
+    }
+  }, [isOpen, isMuted]);
+
   const handleClose = () => {
     setIsOpen(false);
+  };
+
+  const handleCTAClick = () => {
+    playCTAConfirmSound(isMuted);
   };
 
   const leadMessage = 'Hello Shree Uniya Construction, I would like to schedule a civil construction consultation and request an estimate for my project.';
@@ -94,12 +111,12 @@ export const LeadPopup = () => {
 
               {/* Technical features overview */}
               <div className="border-y border-white/5 py-4 flex flex-col gap-3 font-mono text-[10px] text-arch-grey">
-                <div className="flex items-center gap-2">
-                  <Compass className="w-3.5 h-3.5 text-gold" />
+                <div className="flex items-start gap-2.5">
+                  <ShovelIcon className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
                   <span>GPS location mapping and site dimensions checks.</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Compass className="w-3.5 h-3.5 text-gold" />
+                <div className="flex items-start gap-2.5">
+                  <ShovelIcon className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
                   <span>Concrete grade mixture planning (M25 / M30).</span>
                 </div>
               </div>
@@ -110,6 +127,7 @@ export const LeadPopup = () => {
                   href={getWhatsAppLink(leadMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={handleCTAClick}
                   className="w-full sm:w-grow"
                 >
                   <Button variant="accent" className="w-full text-[10px] py-3 flex items-center justify-center gap-2">

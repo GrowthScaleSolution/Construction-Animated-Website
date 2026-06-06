@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { MessageSquare } from 'lucide-react';
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from '@/lib/whatsapp';
 
-export const WhatsAppCTA = () => {
+export const WhatsAppCTA = ({ isMuted = true }: { isMuted?: boolean }) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}

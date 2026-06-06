@@ -8,25 +8,25 @@ import { Target, ShieldCheck, Ruler, Scale } from 'lucide-react';
 export const WhyChooseUs = () => {
   const metrics = [
     {
-      icon: <Ruler className="w-6 h-6 text-gold" />,
+      icon: <Ruler className="w-6 h-6 text-white/30 group-hover:text-gold transition-colors duration-500" />,
       title: 'Deviation Tolerances',
       metric: '< 2.0mm Plumb Deflection',
       desc: 'All structural columns and retaining profiles are calibrated with precision optical lasers to meet zero deviation limits.',
     },
     {
-      icon: <ShieldCheck className="w-6 h-6 text-gold" />,
+      icon: <ShieldCheck className="w-6 h-6 text-white/30 group-hover:text-gold transition-colors duration-500" />,
       title: 'Compressive Resistance',
       metric: 'M25 / M30 Grade Baselines',
       desc: 'We perform strict concrete cube compression testing on every structural pour, rejecting any batches under nominal strengths.',
     },
     {
-      icon: <Target className="w-6 h-6 text-gold" />,
+      icon: <Target className="w-6 h-6 text-white/30 group-hover:text-gold transition-colors duration-500" />,
       title: 'Precision Layouts',
       metric: '± 1.5mm Axis Accuracy',
       desc: 'Foundation and framing boundaries are plotted using digital station positioning, avoiding grid intersection drift.',
     },
     {
-      icon: <Scale className="w-6 h-6 text-gold" />,
+      icon: <Scale className="w-6 h-6 text-white/30 group-hover:text-gold transition-colors duration-500" />,
       title: 'Steel Safety Factors',
       metric: 'Fe500D Seismic Grades',
       desc: 'Utilizing certified high-ductility reinforcement steel with tested tensile ratios to guarantee structural elasticity.',
@@ -34,7 +34,7 @@ export const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="relative py-24 bg-charcoal-dark/20 border-t border-white/5">
+    <section className="relative py-24 md:py-36 bg-charcoal-dark/20 border-t border-white/5">
       {/* Visual references */}
       <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
         SECTION_04 // QUALITY_ASSURANCE // METRICS

@@ -26,11 +26,11 @@ export const Heading: React.FC<HeadingProps> = ({
       )}
       <Tag
         className={cn(
-          "text-white leading-none uppercase font-display",
-          level === 1 && "text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight",
-          level === 2 && "text-3xl md:text-4xl lg:text-5xl font-semibold tracking-wide",
-          level === 3 && "text-xl md:text-2xl font-semibold tracking-wide",
-          level === 4 && "text-base md:text-lg font-medium tracking-wider text-white",
+          "text-white uppercase font-display",
+          level === 1 && "text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02]",
+          level === 2 && "text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.05]",
+          level === 3 && "text-xl md:text-2xl font-bold tracking-tight leading-snug",
+          level === 4 && "text-xs md:text-sm font-semibold tracking-[0.2em] text-white/95",
           className
         )}
         {...props}

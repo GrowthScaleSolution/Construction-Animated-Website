@@ -6,13 +6,15 @@ import { X, Shield, Landmark, Construction } from 'lucide-react';
 import Heading from '@/components/ui/Heading';
 import Button from '@/components/ui/Button';
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from '@/lib/whatsapp';
+import { playPopupOpenSound, playCTAConfirmSound } from '@/lib/sound';
 
 interface CivilModalProps {
   isOpen: boolean;
   onClose: () => void;
+  isMuted: boolean;
 }
 
-export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose }) => {
+export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted }) => {
   // Lock scroll when open
   useEffect(() => {
     if (isOpen) {
@@ -24,6 +26,17 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose }) => {
       document.body.style.overflow = 'unset';
     };
   }, [isOpen]);
+
+  // Play sound when the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      playPopupOpenSound(isMuted);
+    }
+  }, [isOpen, isMuted]);
+
+  const handleCTAClick = () => {
+    playCTAConfirmSound(isMuted);
+  };
 
   return (
     <AnimatePresence>
@@ -147,6 +160,7 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose }) => {
                   href={getWhatsAppLink(WHATSAPP_MESSAGES.siteVisit)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={handleCTAClick}
                   className="w-full sm:w-auto"
                 >
                   <Button variant="accent" className="w-full text-[10px] py-2.5 px-4">
@@ -157,6 +171,7 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose }) => {
                   href={getWhatsAppLink(WHATSAPP_MESSAGES.technical)}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={handleCTAClick}
                   className="w-full sm:w-auto"
                 >
                   <Button variant="secondary" className="w-full text-[10px] py-2.5 px-4 border-white/15">
