@@ -35,13 +35,13 @@ export const Process = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
         {/* Section Header */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-4"
         >
-          <Heading level={2} sectionTag="05 // STRATIFIED WORKFLOW">
+          <Heading level={2} sectionTag="Workflow Stages">
             The Construction Process
           </Heading>
           <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
@@ -53,17 +53,17 @@ export const Process = () => {
         <motion.div 
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={{
             hidden: { opacity: 0 },
-            visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+            visible: { opacity: 1, transition: { staggerChildren: 0.3 } }
           }}
           className="grid grid-cols-1 md:grid-cols-4 gap-8 relative"
         >
           {steps.map((step, idx) => (
             <motion.div key={idx} variants={{
-              hidden: { opacity: 0, x: -20 },
-              visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
             }} className="flex flex-col gap-6 relative group select-none">
               {/* Horizontal line joining steps on desktop */}
               {idx < 3 && (

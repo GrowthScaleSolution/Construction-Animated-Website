@@ -5,7 +5,7 @@ import { ChevronDown, ArrowUpRight, ShieldCheck, Ruler, Scale } from 'lucide-rea
 import Heading from '@/components/ui/Heading';
 import Button from '@/components/ui/Button';
 import { getWhatsAppLink, WHATSAPP_MESSAGES } from '@/lib/whatsapp';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,46 +39,45 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     return () => clearTimeout(timer);
   }, [isVideoLoaded]);
 
+  const { scrollY } = useScroll();
+  const videoY = useTransform(scrollY, [0, 1000], [0, 250]);
+
   return (
     <section
       ref={containerRef}
       onMouseMove={handleMouseMove}
       className="relative min-h-screen bg-charcoal-dark text-white flex flex-col justify-between overflow-hidden pt-32 pb-12 px-6 md:px-12 select-none"
     >
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        onPlay={() => setIsVideoLoaded(true)}
-        onError={() => setIsVideoError(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 ${
-          isVideoLoaded && !isVideoError ? 'opacity-100' : 'opacity-0'
-        }`}
+      <motion.div 
+        style={{ y: videoY }}
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       >
-        <source src="/construction-hero-video-muted.mp4" type="video/mp4" />
-      </video>
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          onPlay={() => setIsVideoLoaded(true)}
+          onError={() => setIsVideoError(true)}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+            isVideoLoaded && !isVideoError ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <source src="/construction-hero-video-muted.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
 
       {/* Gradient Overlays for Readability and Vignette */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-obsidian/90 via-obsidian/40 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-obsidian/30 via-transparent to-obsidian/90 pointer-events-none" />
-      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle, transparent 50%, rgba(0,0,0,0.5) 150%)' }} />
-
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-10 construction-grid" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-charcoal-dark/90 via-charcoal-dark/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-charcoal-dark/80 via-transparent to-charcoal-dark/30 pointer-events-none" />
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.5) 120%)' }} />
       
       {!isTouch && (
-        <>
-          <div 
-            className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 mix-blend-screen"
-            style={{ background: `radial-gradient(circle 600px at ${coords.x}px ${coords.y}px, rgba(255, 200, 10, 0.08), transparent 60%)` }}
-          />
-          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-            <line x1={coords.x} y1="0" x2={coords.x} y2="100%" stroke="rgba(255, 200, 10, 0.12)" strokeWidth="0.5" strokeDasharray="4 4" />
-            <line x1="0" y1={coords.y} x2="100%" y2={coords.y} stroke="rgba(255, 200, 10, 0.12)" strokeWidth="0.5" strokeDasharray="4 4" />
-            <circle cx={coords.x} cy={coords.y} r="2" fill="#FFC80A" className="opacity-60" />
-          </svg>
-        </>
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 mix-blend-screen"
+          style={{ background: `radial-gradient(circle 600px at ${coords.x}px ${coords.y}px, rgba(255, 200, 10, 0.08), transparent 60%)` }}
+        />
       )}
 
       {/* Coords overlay removed to reduce visual clutter */}
@@ -93,48 +92,48 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           <div className="lg:col-span-7 flex flex-col items-start gap-4 md:gap-6 text-left">
-            <span className="text-[9px] md:text-[10px] font-mono tracking-[0.35em] text-gold uppercase font-semibold">
-              [ CIVIL & BUILDING CONSTRUCTION SERVICES ]
+            <span className="text-[10px] md:text-xs font-medium tracking-widest text-gold uppercase">
+              Civil & Building Construction
             </span>
             
             <Heading level={1} className="text-white leading-[1.05] tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
               Engineering <br />the Inevitable.
             </Heading>
 
-            <p className="text-arch-grey text-xs sm:text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-1 md:mt-2">
+            <p className="text-arch-grey text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-1 md:mt-2">
               Premium structural execution, concrete framing, and foundation engineering. Operating under strict, code-compliant parameters in Nallasopara, Mumbai.
             </p>
           </div>
 
           <div className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0">
-            <div className="relative bg-charcoal-dark/45 border border-white/10 p-6 md:p-8 backdrop-blur-md w-full max-w-md overflow-hidden group hover:bg-charcoal-dark/70 hover:border-gold/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-gold/5">
-              <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-gold/40" />
-              <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-gold/40" />
-              <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-gold/40" />
-              <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-gold/40" />
+            <div className="relative bg-black/30 border border-white/10 p-6 md:p-8 backdrop-blur-md w-full max-w-md overflow-hidden group hover:bg-black/50 hover:border-gold/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/50">
+              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
+              <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
+              <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
 
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-4 relative z-10">
                 <div className="flex justify-between items-start">
-                  <span className="text-[9px] font-mono text-gold uppercase tracking-[0.2em]">[ ENGINEERING FOCUS ]</span>
-                  <ArrowUpRight className="w-4 h-4 text-gold/60 group-hover:text-gold transition-colors duration-300" />
+                  <span className="text-[10px] font-medium text-gold uppercase tracking-widest">Quality Assurance</span>
+                  <ShieldCheck className="w-4 h-4 text-gold/60 group-hover:text-gold transition-colors duration-300" />
                 </div>
                 
-                <h4 className="font-display font-semibold text-white text-sm md:text-base tracking-wide uppercase">
-                  Project Integrity Check
+                <h4 className="font-display font-semibold text-white text-base md:text-lg tracking-wide uppercase">
+                  Structural Integrity
                 </h4>
                 
-                <p className="text-xs text-arch-grey leading-relaxed font-light">
-                  Calibrating concrete compressive strengths and structural deflection indexes. Every building core is cast to support complex vertical load stresses.
+                <p className="text-sm text-arch-grey leading-relaxed font-light">
+                  Every building core is cast to support complex vertical load stresses, ensuring lasting durability and safety.
                 </p>
 
-                <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-white/5 font-mono text-[9px] text-arch-grey">
+                <div className="flex flex-col gap-3 mt-2 pt-4 border-t border-white/10 text-[11px] text-arch-grey tracking-wide uppercase">
                   <div className="flex justify-between">
-                    <span>SEISMIC COMPLIANCE</span>
-                    <span className="text-white">IS:1893 STANDARD</span>
+                    <span>Seismic Standard</span>
+                    <span className="text-white font-medium">IS:1893</span>
                   </div>
                   <div className="flex justify-between">
-                    <span>CONCRETE MIX AUDITS</span>
-                    <span className="text-white">GRADE M25 MINIMUM</span>
+                    <span>Concrete Grade</span>
+                    <span className="text-white font-medium">M25 Minimum</span>
                   </div>
                 </div>
               </div>

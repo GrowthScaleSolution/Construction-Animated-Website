@@ -31,21 +31,21 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
   const layers = [
     {
       id: 'foundation' as Layer,
-      label: '01 // Foundation Raft',
+      label: 'Foundation Raft',
       spec: 'RCC raft slab foundations designed for maximum structural load distribution. Reinforced with double-mesh rebar layouts.',
       thickness: '450mm Slab Thickness',
       reinforcement: 'Fe500D steel grids',
     },
     {
       id: 'framing' as Layer,
-      label: '02 // Column Framing',
+      label: 'Column Framing',
       spec: 'Reinforced concrete columns aligned strictly to structural axes. Engineered to handle vertical and shear forces.',
       thickness: '300mm x 450mm Columns',
       reinforcement: '16mm vertical rebar configurations',
     },
     {
       id: 'masonry' as Layer,
-      label: '03 // Wall Masonry',
+      label: 'Wall Masonry',
       spec: 'Laser-aligned blockwork layouts forming structural partitions. Mortar compounds mixed strictly by volume metrics.',
       thickness: '230mm Outer, 115mm Inner',
       reinforcement: 'Brickwork horizontal ties',
@@ -60,13 +60,13 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-4"
         >
-          <Heading level={2} sectionTag="03 // ARCHITECTURAL SCHEMATICS">
+          <Heading level={2} sectionTag="Architectural Schematics">
             Interactive Blueprint Viewer
           </Heading>
           <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
@@ -76,10 +76,10 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1"
           >
             <div className="flex flex-col gap-3 font-mono text-xs">
@@ -95,7 +95,7 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
                 >
                   <span>{layer.label}</span>
                   <span className="text-[9px] font-mono tracking-wider">
-                    {activeLayer === layer.id ? '● ACTIVE' : '○ VIEW'}
+                    {activeLayer === layer.id ? 'Active' : 'Select'}
                   </span>
                 </button>
               ))}
@@ -111,23 +111,21 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
                   transition={{ duration: 0.3 }}
                   className="flex flex-col gap-4"
                 >
-                  <span className="text-[10px] font-mono text-gold uppercase tracking-[0.2em]">[ LAYER_DETAILS ]</span>
+
                   <p className="text-sm text-arch-grey leading-relaxed font-light">{currentLayer.spec}</p>
                   
                   <div className="border border-white/5 bg-obsidian/40 h-48 relative overflow-hidden mt-2 rounded-sm touch-none">
                     <StructuralGirder3D />
-                    <span className="absolute bottom-2 left-2 text-[8px] font-mono text-gold/40 z-20 pointer-events-none">
-                      3D_FRAME // ORBIT_ACTIVE
-                    </span>
+
                   </div>
 
                   <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-white/5 text-[10px] sm:text-xs font-mono">
                     <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0">
-                      <span className="text-white/40 font-light">CALIBRATED THICKNESS</span>
+                      <span className="text-white/40 font-light">THICKNESS</span>
                       <span className="text-white">{currentLayer.thickness}</span>
                     </div>
                     <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0 mt-2 sm:mt-0">
-                      <span className="text-white/40 font-light">REBAR PARAMETERS</span>
+                      <span className="text-white/40 font-light">REINFORCEMENT</span>
                       <span className="text-white">{currentLayer.reinforcement}</span>
                     </div>
                   </div>
@@ -137,9 +135,9 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
+            initial={{ opacity: 0, scale: 0.95, y: 40 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex justify-center items-center order-1 lg:order-2"
           >

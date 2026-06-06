@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
+import Image from 'next/image';
 import Heading from '@/components/ui/Heading';
 import Button from '@/components/ui/Button';
 import ShovelIcon from '@/components/ui/ShovelIcon';
@@ -21,6 +22,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
       desc: 'Casting reinforced concrete frameworks, shear walls, and columns designed to absorb and distribute load forces safely.',
       msg: WHATSAPP_MESSAGES.rcc,
       btnText: 'Inquire RCC Framing',
+      image: '/images/service-structural-work.jpeg',
       bullets: [
         'Seismic-resistant column and beam casting',
         'Standard concrete grade mixes (M25, M30)',
@@ -34,6 +36,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
       desc: 'Precision excavation, grading, and geotechnical preparation to establish a stable structural sub-base.',
       msg: WHATSAPP_MESSAGES.earthworks,
       btnText: 'Inquire Foundation Prep',
+      image: '/images/service-civil-construction.jpeg',
       bullets: [
         'Foundation footing trenching & grading',
         'Geotechnical plate load-bearing audits',
@@ -47,6 +50,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
       desc: 'Premium brickwork and partition blockwork structures executed under strict vertical alignment parameters.',
       msg: WHATSAPP_MESSAGES.masonry,
       btnText: 'Inquire Masonry',
+      image: '/images/service-renovation.jpeg',
       bullets: [
         'Load-bearing blockwork and masonry partitions',
         'Autoclaved Aerated Concrete (AAC) configurations',
@@ -70,7 +74,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
         >
-          <Heading level={2} sectionTag="02 // CIVIL CAPABILITIES">
+          <Heading level={2} sectionTag="Civil Capabilities">
             Civil Construction Services
           </Heading>
           
@@ -98,44 +102,52 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
             }}>
-              <Card className="flex flex-col h-full justify-between bg-white border-black/5 shadow-sm group hover:-translate-y-1 transition-transform duration-500">
-              <div className="flex flex-col gap-6">
-                <div className="flex justify-between items-start">
-                  <span className="font-mono text-xs text-gold">[ UNIT_{svc.id} ]</span>
-                  <span className="font-mono text-[9px] text-black/30 uppercase">SPEC_CHECK // PASS</span>
+              <Card className="flex flex-col h-full justify-between bg-[#F5F5F5] border-black/10 shadow-sm group hover:-translate-y-1 transition-transform duration-500 !p-0">
+                <div className="relative w-full h-48 md:h-56 overflow-hidden">
+                  <Image 
+                    src={svc.image} 
+                    alt={svc.title} 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
                 </div>
+                
+                <div className="flex flex-col flex-grow p-6 md:p-8">
+                  <div className="flex flex-col gap-6">
 
-                <div className="flex flex-col gap-3">
-                  <Heading level={3} className="text-black">{svc.title}</Heading>
-                  <p className="text-zinc-600 text-sm font-light leading-relaxed">
-                    {svc.desc}
-                  </p>
+
+                    <div className="flex flex-col gap-3">
+                      <Heading level={3} className="text-black">{svc.title}</Heading>
+                      <p className="text-zinc-600 text-sm font-light leading-relaxed">
+                        {svc.desc}
+                      </p>
+                    </div>
+
+                    {/* Shovel-style bullet lists */}
+                    <ul className="flex flex-col gap-3.5 mt-2">
+                      {svc.bullets.map((bullet, idx) => (
+                        <li key={idx} className="flex items-start gap-3 text-xs text-zinc-600 leading-relaxed">
+                          <ShovelIcon className="w-3.5 h-3.5 text-black/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Service specific CTA button */}
+                  <div className="mt-8 pt-6 border-t border-black/5 mt-auto">
+                    <a
+                      href={getWhatsAppLink(svc.msg)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full block"
+                    >
+                      <Button variant="secondary" className="w-full text-[10px] py-3" isMuted={isMuted} soundType="cta">
+                        {svc.btnText}
+                      </Button>
+                    </a>
+                  </div>
                 </div>
-
-                {/* Shovel-style bullet lists */}
-                <ul className="flex flex-col gap-3.5 mt-2">
-                  {svc.bullets.map((bullet, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-xs text-zinc-600 leading-relaxed">
-                      <ShovelIcon className="w-3.5 h-3.5 text-black/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Service specific CTA button */}
-              <div className="mt-8 pt-6 border-t border-black/5">
-                <a
-                  href={getWhatsAppLink(svc.msg)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full block"
-                >
-                  <Button variant="secondary" className="w-full text-[10px] py-3" isMuted={isMuted} soundType="cta">
-                    {svc.btnText}
-                  </Button>
-                </a>
-              </div>
               </Card>
             </motion.div>
           ))}

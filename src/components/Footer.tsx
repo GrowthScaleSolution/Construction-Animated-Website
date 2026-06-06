@@ -10,10 +10,10 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12">
         {/* Main top footer layout */}
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row justify-between items-start gap-8"
         >
           <div className="flex flex-col gap-4">
@@ -25,14 +25,13 @@ export const Footer = () => {
 
           {/* Quick Index links */}
           <div className="flex flex-col gap-3">
-            <span className="font-mono text-[9px] text-gold uppercase tracking-widest">[ QUICK INDEX ]</span>
+            <span className="font-mono text-[9px] text-gold uppercase tracking-widest">Quick Links</span>
             <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-xs text-arch-grey">
-              <a href="#about" className="hover:text-gold transition-colors duration-300">01 // About Philosophy</a>
-              <a href="#services" className="hover:text-gold transition-colors duration-300">02 // Civil Services</a>
-              <a href="#blueprints" className="hover:text-gold transition-colors duration-300">03 // Interactive Blueprints</a>
-              <a href="#process" className="hover:text-gold transition-colors duration-300">04 // Workflow Stages</a>
-              <a href="#showcase" className="hover:text-gold transition-colors duration-300">05 // Active Portfolio</a>
-              <a href="#contact" className="hover:text-gold transition-colors duration-300">06 // Coordinate Mapping</a>
+              <a href="#about" className="hover:text-gold transition-colors duration-300">About Philosophy</a>
+              <a href="#services" className="hover:text-gold transition-colors duration-300">Civil Services</a>
+              <a href="#blueprints" className="hover:text-gold transition-colors duration-300">Interactive Blueprints</a>
+              <a href="#showcase" className="hover:text-gold transition-colors duration-300">Active Portfolio</a>
+              <a href="#contact" className="hover:text-gold transition-colors duration-300">Coordinate Mapping</a>
             </div>
           </div>
         </motion.div>
@@ -49,7 +48,7 @@ export const Footer = () => {
             <span>SHREE UNIYA CONSTRUCTION © 2026 // ALL RIGHTS RESERVED</span>
           </div>
           <div className="text-center md:text-right text-[9px] text-gold/30">
-            DISCLAIMER // PRE-LAUNCH CONCEPTUAL HOMEPAGE DEMO
+            Pre-Launch Demo
           </div>
         </motion.div>
       </div>

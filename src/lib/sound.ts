@@ -128,10 +128,10 @@ export function playSound(src: string, volume: number = 0.05, isMuted: boolean =
 }
 
 // Named exports
-export const playClickSound = (isMuted: boolean) => playSound('/sounds/premium-click.mp3', 0.04, isMuted, 'click');
-export const playPopupOpenSound = (isMuted: boolean) => playSound('/sounds/popup-open.mp3', 0.04, isMuted, 'popup');
-export const playWhooshSound = (isMuted: boolean) => playSound('/sounds/soft-whoosh.mp3', 0.03, isMuted, 'whoosh');
-export const playCTAConfirmSound = (isMuted: boolean) => playSound('/sounds/cta-confirm.mp3', 0.05, isMuted, 'cta');
+export const playClickSound = (isMuted: boolean) => playSound('/sounds/premium-click.mp3', 0.40, isMuted, 'click');
+export const playPopupOpenSound = (isMuted: boolean) => playSound('/sounds/popup-open.mp3', 0.40, isMuted, 'popup');
+export const playWhooshSound = (isMuted: boolean) => playSound('/sounds/soft-whoosh.mp3', 0.0, isMuted, 'whoosh');
+export const playCTAConfirmSound = (isMuted: boolean) => playSound('/sounds/cta-confirm.mp3', 0.50, isMuted, 'cta');
 
 // Cement mixer loader sound handles loop start & stop lifecycle
 let mixerAudio: HTMLAudioElement | null = null;

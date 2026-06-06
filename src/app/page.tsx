@@ -16,7 +16,7 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CivilModal from '@/components/CivilModal';
 import WhatsAppCTA from '@/components/WhatsAppCTA';
-import { playClickSound, playWhooshSound } from '@/lib/sound';
+import { playClickSound } from '@/lib/sound';
 
 export default function Home() {
   const [isMuted, setIsMuted] = useState(true);

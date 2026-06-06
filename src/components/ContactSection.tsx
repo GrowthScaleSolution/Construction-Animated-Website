@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import Heading from '@/components/ui/Heading';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -14,7 +15,7 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }) => {
   return (
-    <section id="contact" className="relative py-24 md:py-36 bg-charcoal-dark/20 border-t border-white/5 overflow-hidden">
+    <section id="contact" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5 overflow-hidden">
       {/* Decorative details removed */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
@@ -26,7 +27,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-4"
         >
-          <Heading level={2} sectionTag="07 // ESTABLISH CONNECTION">
+          <Heading level={2} sectionTag="Contact Information">
             Project Coordinates & Contact
           </Heading>
           <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
@@ -47,7 +48,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
               <div className="flex items-start gap-4">
                 <MapPin className="w-5 h-5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-1" />
                 <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[9px] text-gold uppercase tracking-widest">[ PROJECT OFFICE ]</span>
+                  <span className="font-mono text-[9px] text-gold uppercase tracking-widest">Regional Office</span>
                   <h4 className="font-display font-semibold text-white text-sm">Nallasopara, Mumbai</h4>
                   <p className="text-xs text-arch-grey leading-relaxed mt-1">
                     Serving residential developments, commercial framing, and foundation scopes in Mumbai's western nodes.
@@ -68,7 +69,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
               <div className="flex items-start gap-4">
                 <PhoneCall className="w-5 h-5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-1" />
                 <div className="flex flex-col gap-1">
-                  <span className="font-mono text-[9px] text-gold uppercase tracking-widest">[ DIRECT WHATSAPP ]</span>
+                  <span className="font-mono text-[9px] text-gold uppercase tracking-widest">Direct WhatsApp</span>
                   <h4 className="font-display font-semibold text-white text-sm">+91 97658 02900</h4>
                   <p className="text-xs text-arch-grey leading-relaxed mt-1">
                     Click to initiate a WhatsApp chat directly for material estimates or scheduling layout consultations.
@@ -90,32 +91,56 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
             {/* Geographical index card removed */}
           </motion.div>
 
-          {/* Right Side: Visual Map Blueprint Drawing */}
+          {/* Right Side: Visual Map & Site Visit Image */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 bg-charcoal-dark border border-white/10 blueprint-grid relative p-8 flex items-center justify-center min-h-[300px] lg:min-h-[400px]"
+            className="lg:col-span-7 flex flex-col gap-6"
           >
-            {/* Coordinate markings removed */}
-            
-            {/* Map Placeholder */}
-            <div className="w-full h-full flex flex-col justify-center items-center gap-4 text-center z-10 p-6 select-none bg-obsidian/40 backdrop-blur-sm border border-white/5 rounded-lg shadow-2xl overflow-hidden group hover:border-gold/20 transition-colors duration-500 cursor-pointer">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center bg-gold/10 group-hover:bg-gold/20 transition-colors duration-500 mb-2">
-                <MapPin className="w-8 h-8 text-gold" />
-              </div>
-              <div className="flex flex-col gap-2 max-w-xs">
-                <span className="font-display font-semibold text-white text-sm sm:text-base tracking-wider group-hover:text-gold transition-colors duration-500">
-                  Nallasopara Site Office
-                </span>
-                <p className="text-xs text-arch-grey leading-relaxed">
-                  Visit our regional office to discuss construction timelines, material estimates, and technical drawings.
+            {/* Site Visit Image Card */}
+            <div className="bg-charcoal-dark border border-white/10 relative flex items-end justify-start h-[250px] lg:h-[300px] rounded-sm overflow-hidden group">
+              <Image 
+                src="/images/contact-site-visit.jpeg"
+                alt="Request a Site Visit"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-1000"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/90 via-charcoal-dark/40 to-transparent group-hover:from-charcoal-dark/80 transition-colors duration-500" />
+              
+              <div className="relative z-10 p-6 md:p-8 flex flex-col gap-2 w-full">
+                <span className="font-mono text-[10px] text-gold uppercase tracking-[0.2em]">In-Person Tour</span>
+                <h4 className="font-display font-semibold text-white text-xl md:text-2xl">Schedule a Site Visit</h4>
+                <p className="text-sm text-arch-grey leading-relaxed max-w-md font-light">
+                  Inspect our active structural framing, foundation pours, and concrete quality directly at our active sites.
                 </p>
-                <span className="mt-4 text-[10px] font-mono text-gold uppercase tracking-[0.2em] group-hover:opacity-100 opacity-60 transition-opacity">
-                  Click to Open Maps
-                </span>
+                <a
+                  href={getWhatsAppLink('Hello, I would like to request a site visit to inspect your active construction projects.')}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-block w-max"
+                >
+                  <Button variant="accent" className="px-6 py-2.5 text-xs" isMuted={isMuted} soundType="cta">
+                    Request Site Visit
+                  </Button>
+                </a>
               </div>
+            </div>
+
+            {/* Embedded Google Map */}
+            <div className="bg-charcoal-dark border border-white/10 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group">
+              <iframe 
+                 src="https://maps.google.com/maps?q=Nallasopara,+Mumbai&t=m&z=13&output=embed&iwloc=near"
+                 width="100%" 
+                 height="100%" 
+                 style={{ border: 0 }} 
+                 loading="lazy" 
+                 title="Nallasopara, Mumbai Map"
+                 className="absolute inset-0 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 pointer-events-auto"
+               />
+               {/* Map Overlay to prevent scroll trapping unless hovered/clicked */}
+               <div className="absolute inset-0 pointer-events-none border border-white/5 shadow-inner" />
             </div>
           </motion.div>
         </div>
