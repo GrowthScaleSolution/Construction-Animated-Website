@@ -1,13 +1,14 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Image from 'next/image';
 import Heading from '@/components/ui/Heading';
 import Card from '@/components/ui/Card';
 import { Layers, MapPin } from 'lucide-react';
 
 export const Showcase = () => {
+  const shouldReduceMotion = useReducedMotion();
   const projects = [
     {
       id: '01',
@@ -36,29 +37,29 @@ export const Showcase = () => {
   ];
 
   return (
-    <section id="showcase" className="relative py-24 md:py-36 bg-section-alt2 border-t border-white/5 concrete-texture">
+    <section id="showcase" className="relative py-16 md:py-24 bg-section-alt2 border-t border-white/5 concrete-texture">
       {/* Decorative details */}
       {/* Decorative details removed */}
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
+      <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex flex-col gap-12 md:gap-16">
         {/* Section Header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-3.5"
         >
           <Heading level={2} sectionTag="Active Portfolio" className="text-white">
             Active Building Showcases
           </Heading>
-          <p className="text-zinc-300 text-sm max-w-2xl font-light leading-relaxed">
+          <p className="text-zinc-300 text-xs sm:text-sm max-w-2xl font-light leading-relaxed">
             A listing of active civil construction and concrete framing scopes managed under our strict engineering parameters.
           </p>
         </motion.div>
 
         {/* Project Layout: Featured Image Left, Stacked Cards Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 items-stretch">
           
           {/* Featured Image */}
           <motion.div 
@@ -68,7 +69,7 @@ export const Showcase = () => {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 p-2 bg-card-surf border border-white/10 shadow-2xl shadow-black/85 rounded-sm group overflow-hidden flex flex-col"
           >
-            <div className="relative w-full flex-grow min-h-[400px] lg:min-h-[580px] overflow-hidden rounded-sm">
+            <div className="relative w-full flex-grow min-h-[260px] xs:min-h-[320px] md:min-h-[400px] lg:min-h-[580px] overflow-hidden rounded-sm">
               <Image 
                 src="/images/project-site-work.jpeg" 
                 alt="Active civil construction and structural concrete framing at our primary project site" 
@@ -77,7 +78,7 @@ export const Showcase = () => {
                 className="object-cover group-hover:scale-103 transition-transform duration-1000 ease-out"
                 priority
               />
-              <div className="absolute bottom-6 left-6 bg-obsidian/90 border border-white/10 backdrop-blur-sm text-white px-4 py-2 font-mono text-[10px] uppercase tracking-widest z-10">
+              <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-obsidian/90 border border-white/10 backdrop-blur-sm text-white px-3 py-1.5 sm:px-4 sm:py-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest z-10">
                 FEATURED ACTIVE SITE
               </div>
             </div>
@@ -92,14 +93,14 @@ export const Showcase = () => {
               hidden: { opacity: 0 },
               visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
             }}
-            className="lg:col-span-5 flex flex-col gap-6"
+            className="lg:col-span-5 flex flex-col gap-5 md:gap-6"
           >
             {projects.map((proj) => (
               <motion.div key={proj.id} variants={{
-                hidden: { opacity: 0, x: 45, scale: 0.98 },
-                visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
               }} className="h-full">
-                <Card hoverEffect={true} className="flex flex-col h-full justify-between bg-card-surf border border-white/5 shadow-sm">
+                <Card hoverEffect={true} className="flex flex-col h-full justify-between bg-card-surf border border-white/5 shadow-sm !p-5">
                   <div className="flex flex-col gap-4">
                     <div className="flex justify-between items-start font-mono text-[9px] text-zinc-400 uppercase">
                       <span>{proj.id}</span>
@@ -108,7 +109,7 @@ export const Showcase = () => {
                     
                     <div className="flex flex-col gap-1">
                       <span className="font-mono text-[9px] text-gold uppercase tracking-[0.2em]">Featured Project</span>
-                      <Heading level={3} className="text-lg md:text-xl font-semibold mt-1 text-white">
+                      <Heading level={3} className="text-base sm:text-lg md:text-xl font-semibold mt-1 text-white">
                         {proj.title}
                       </Heading>
                     </div>

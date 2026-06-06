@@ -10,12 +10,12 @@
   --color-concrete-sand: #D8D5CD;
   --color-gold: #FFC80A;
   --color-arch-grey: #A3A3A3;
-  --color-border-dark: #262626;
+  --color-border-dark: rgba(255, 255, 255, 0.08);
 
   /* Custom alternates */
-  --color-section-alt1: #101010;
+  --color-section-alt1: #111111;
   --color-section-alt2: #151515;
-  --color-section-alt3: #1B1B1B;
+  --color-section-alt3: #1A1A1A;
   --color-card-surf: #181818;
   --color-card-surf-light: #202020;
 
@@ -28,11 +28,15 @@
   --foreground: #FFFFFF;
 }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-outfit), sans-serif;
-  overflow-x: hidden;
 }
 
 /* Custom background styles representing technical drafting paper */
@@ -136,7 +140,7 @@ body {
   color: transparent;
 }
 
-/* Procedural CSS Concrete/Noise Texture */
+/* Refined Premium Dark Canvas/Concrete Fabric Texture */
 .concrete-texture {
   position: relative;
 }
@@ -145,7 +149,9 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.02;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.012;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fineNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fineNoise)'/%3E%3C/svg%3E");
   z-index: 0;
 }

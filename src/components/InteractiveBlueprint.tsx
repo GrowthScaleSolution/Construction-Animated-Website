@@ -55,53 +55,53 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
   const currentLayer = layers.find((l) => l.id === activeLayer)!;
 
   return (
-    <section id="blueprints" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden concrete-texture">
+    <section id="blueprints" className="relative py-16 md:py-24 bg-obsidian border-t border-white/5 overflow-hidden concrete-texture">
       {/* Drafting metadata removed for cleaner look */}
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16">
+      <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex flex-col gap-10 md:gap-16">
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-3.5"
         >
           <Heading level={2} sectionTag="Architectural Schematics">
             Interactive Blueprint Viewer
           </Heading>
-          <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
+          <p className="text-arch-grey text-xs sm:text-sm max-w-2xl font-light leading-relaxed">
             Verify structural building layers by selecting the corresponding systems below. The visual schematics update to reflect engineered layouts.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           <motion.div 
-            initial={{ opacity: 0, x: -40 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1"
+            className="lg:col-span-5 flex flex-col gap-6 md:gap-8 order-2 lg:order-1"
           >
-            <div className="flex flex-col gap-3 font-mono text-xs">
+            <div className="grid grid-cols-3 gap-2 font-mono text-xs">
               {layers.map((layer) => (
                 <button
                   key={layer.id}
                   onClick={() => handleLayerChange(layer.id)}
-                  className={`w-full text-left p-4 border transition-all duration-300 cursor-pointer flex justify-between items-center min-h-[50px] ${
+                  className={`text-center p-2.5 xs:p-3 border transition-all duration-300 cursor-pointer flex flex-col justify-center items-center gap-1 min-h-[50px] rounded-sm ${
                     activeLayer === layer.id
                       ? 'border-gold text-gold bg-gold/5'
                       : 'border-white/10 text-arch-grey hover:border-white/30 hover:text-white'
                   }`}
                 >
-                  <span>{layer.label}</span>
-                  <span className="text-[9px] font-mono tracking-wider">
-                    {activeLayer === layer.id ? 'Active' : 'Select'}
+                  <span className="font-semibold tracking-wide text-[9px] xs:text-[10px] sm:text-xs uppercase whitespace-nowrap">{layer.label.split(' ')[0]}</span>
+                  <span className="text-[7px] xs:text-[8px] font-mono tracking-wider uppercase opacity-60">
+                    {layer.label.split(' ')[1] || 'Layer'}
                   </span>
                 </button>
               ))}
             </div>
 
-            <Card hoverEffect={false} className="border-white/10 bg-card-surf">
+            <Card hoverEffect={false} className="border-white/10 bg-card-surf !p-4 md:!p-6">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentLayer.id}
@@ -112,21 +112,20 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
                   className="flex flex-col gap-4"
                 >
 
-                  <p className="text-sm text-arch-grey leading-relaxed font-light">{currentLayer.spec}</p>
+                  <p className="text-xs sm:text-sm text-arch-grey leading-relaxed font-light">{currentLayer.spec}</p>
                   
-                  <div className="border border-white/5 bg-obsidian/40 h-48 relative overflow-hidden mt-2 rounded-sm touch-none">
+                  <div className="border border-white/5 bg-obsidian/40 h-40 xs:h-48 relative overflow-hidden mt-1 rounded-sm touch-none">
                     <StructuralGirder3D />
-
                   </div>
 
-                  <div className="flex flex-col gap-2 mt-2 pt-4 border-t border-white/5 text-[10px] sm:text-xs font-mono">
-                    <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0">
+                  <div className="flex flex-col gap-2 mt-1 pt-4 border-t border-white/5 text-[10px] sm:text-xs font-mono">
+                    <div className="flex justify-between gap-1">
                       <span className="text-white/40 font-light">THICKNESS</span>
-                      <span className="text-white">{currentLayer.thickness}</span>
+                      <span className="text-white text-right">{currentLayer.thickness}</span>
                     </div>
-                    <div className="flex flex-col sm:flex-row justify-between gap-1 sm:gap-0 mt-2 sm:mt-0">
+                    <div className="flex justify-between gap-1 mt-1 sm:mt-0">
                       <span className="text-white/40 font-light">REINFORCEMENT</span>
-                      <span className="text-white">{currentLayer.reinforcement}</span>
+                      <span className="text-white text-right">{currentLayer.reinforcement}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -135,13 +134,13 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95, y: 40 }}
+            initial={{ opacity: 0, scale: 0.95, y: 30 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex justify-center items-center order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-[500px] aspect-square bg-section-alt2 border border-white/10 blueprint-grid p-4 sm:p-8 flex items-center justify-center">
+            <div className="relative w-full max-w-[280px] xs:max-w-[340px] sm:max-w-[420px] md:max-w-[500px] aspect-square bg-section-alt2 border border-white/10 blueprint-grid p-4 sm:p-8 flex items-center justify-center rounded-sm">
               {/* Corner markers removed */}
 
               <svg className="w-full h-full text-white/25" viewBox="0 0 200 200" fill="none">

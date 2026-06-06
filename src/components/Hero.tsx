@@ -19,6 +19,8 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     setIsTouch(window.matchMedia('(pointer: coarse)').matches);
   }, []);
 
+  const requestRef = useRef<number | null>(null);
+
   const handleMouseMove = (e: React.MouseEvent) => {
     if (isTouch || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -28,9 +30,23 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     const rX = parseFloat((((y / rect.height) - 0.5) * -6).toFixed(2));
     const rY = parseFloat((((x / rect.width) - 0.5) * 6).toFixed(2));
     
-    setCoords({ x: parseFloat(x.toFixed(1)), y: parseFloat(y.toFixed(1)) });
-    setRotateDeg({ rX, rY });
+    if (requestRef.current !== null) {
+      cancelAnimationFrame(requestRef.current);
+    }
+
+    requestRef.current = requestAnimationFrame(() => {
+      setCoords({ x: parseFloat(x.toFixed(1)), y: parseFloat(y.toFixed(1)) });
+      setRotateDeg({ rX, rY });
+    });
   };
+
+  useEffect(() => {
+    return () => {
+      if (requestRef.current !== null) {
+        cancelAnimationFrame(requestRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -73,13 +89,14 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
   }, []);
 
   const { scrollY } = useScroll();
-  const videoY = useTransform(scrollY, [0, 1000], [0, 250]);
+  const videoYTransform = useTransform(scrollY, [0, 1000], [0, 250]);
+  const videoY = isTouch ? 0 : videoYTransform;
 
   return (
     <section
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen bg-charcoal-dark text-white flex flex-col justify-between overflow-hidden pt-32 pb-12 px-6 md:px-12 select-none"
+      className="relative min-h-[100svh] bg-charcoal-dark text-white flex flex-col justify-between overflow-hidden pt-24 pb-8 px-4 xs:px-6 md:pt-32 md:pb-12 md:px-12 select-none"
     >
       <motion.div 
         style={{ y: videoY }}
@@ -105,16 +122,16 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
 
       {/* Gradient Overlays for Readability and Vignette */}
       {/* Base overlay for general text contrast */}
-      <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-black/45 pointer-events-none" />
       
       {/* Left-to-right gradient: darker on the left to support the text, lighter on the right to show the video */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/70 via-black/45 to-black/15 pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/75 via-black/50 to-black/20 pointer-events-none" />
       
       {/* Bottom-up gradient for vignette/footer transition */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/70 via-transparent to-black/35 pointer-events-none" />
       
       {/* Edge vignette */}
-      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 55%, rgba(0,0,0,0.45) 100%)' }} />
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 50%, rgba(0,0,0,0.5) 100%)' }} />
       
       {!isTouch && (
         <div 
@@ -128,50 +145,64 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
           transform: `perspective(1000px) rotateX(${rotateDeg.rX}deg) rotateY(${rotateDeg.rY}deg)`,
           transformStyle: 'preserve-3d',
         } : undefined}
-        className="relative z-10 w-full max-w-7xl mx-auto flex-grow flex flex-col justify-center transition-transform duration-300 ease-out"
+        className="relative z-10 w-full max-w-7xl mx-auto flex-grow flex flex-col justify-center transition-transform duration-300 ease-out mt-4 md:mt-0"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 items-center">
           
-          <div className="lg:col-span-7 flex flex-col items-start gap-4 md:gap-6 text-left">
-            <span className="text-[10px] md:text-xs font-semibold tracking-widest text-gold uppercase">
+          <div className="lg:col-span-7 flex flex-col items-start gap-3.5 md:gap-5 text-left">
+            <span className="text-[9px] xs:text-[10px] md:text-xs font-semibold tracking-[0.2em] text-gold uppercase">
               Civil & Building Construction
             </span>
             
-            <Heading level={1} className="text-white leading-[1.05] tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
+            <Heading level={1} className="text-white leading-[1.05] tracking-tight">
               Engineering <br />the Inevitable.
             </Heading>
  
-            <p className="text-zinc-200 text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-1 md:mt-2">
+            <p className="text-zinc-200 text-xs sm:text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-0.5 md:mt-2">
               Premium structural execution, concrete framing, and foundation engineering. Operating under strict, code-compliant parameters in Nallasopara, Mumbai.
             </p>
+
+            {/* Mobile CTA Buttons (placed here for better visual rhythm on small screens) */}
+            <div className="flex flex-col gap-3 w-full mt-3 md:hidden">
+              <a href={getWhatsAppLink(WHATSAPP_MESSAGES.general)} target="_blank" rel="noopener noreferrer" className="w-full">
+                <Button variant="accent" className="w-full text-xs py-3.5 flex items-center justify-center min-h-[44px]" isMuted={isMuted} soundType="cta">
+                  Connect on WhatsApp
+                </Button>
+              </a>
+              <a href="#services" className="w-full">
+                <Button variant="secondary" className="w-full text-xs py-3.5 border-white/10 flex items-center justify-center min-h-[44px]" isMuted={isMuted} soundType="click">
+                  Review Specifications
+                </Button>
+              </a>
+            </div>
           </div>
 
           <div className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0">
             <motion.div 
               style={!isTouch ? { x: rotateDeg.rY * 1.5, y: -rotateDeg.rX * 1.5 } : undefined}
               whileHover={{ scale: 1.02 }}
-              className="relative bg-obsidian/85 border border-white/15 p-6 md:p-8 backdrop-blur-xl w-full max-w-md overflow-hidden group hover:bg-black/95 hover:border-gold/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/75"
+              className="relative bg-obsidian/85 border border-white/15 p-4 xs:p-5 sm:p-6 md:p-8 backdrop-blur-xl w-full max-w-md overflow-hidden group hover:bg-black/95 hover:border-gold/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/75"
             >
               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
 
-              <div className="flex flex-col gap-4 relative z-10">
+              <div className="flex flex-col gap-3.5 relative z-10">
                 <div className="flex justify-between items-start">
-                  <span className="text-[10px] font-semibold text-gold uppercase tracking-widest">Quality Assurance</span>
+                  <span className="text-[9px] xs:text-[10px] font-semibold text-gold uppercase tracking-widest">Quality Assurance</span>
                   <ShieldCheck className="w-4 h-4 text-gold/60 group-hover:text-gold transition-colors duration-300" />
                 </div>
                 
-                <h4 className="font-display font-semibold text-white text-base md:text-lg tracking-wide uppercase">
+                <h4 className="font-display font-semibold text-white text-sm xs:text-base md:text-lg tracking-wide uppercase">
                   Structural Integrity
                 </h4>
                 
-                <p className="text-sm text-zinc-300 leading-relaxed font-light">
+                <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed font-light">
                   Every building core is cast to support complex vertical load stresses, ensuring lasting durability and safety.
                 </p>
 
-                <div className="flex flex-col gap-3 mt-2 pt-4 border-t border-white/10 text-[11px] text-zinc-400 tracking-wide uppercase">
+                <div className="flex flex-col gap-2.5 mt-1 pt-3 border-t border-white/10 text-[9px] xs:text-[10px] sm:text-[11px] text-zinc-400 tracking-wide uppercase">
                   <div className="flex justify-between">
                     <span>Seismic Standard</span>
                     <span className="text-white font-medium">IS:1893</span>
@@ -188,15 +219,15 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         </div>
       </motion.div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-6 md:pt-8 gap-6 mt-8">
+      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-5 md:pt-8 gap-5 mt-6 md:mt-8">
         
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-10 text-xs w-full overflow-x-auto no-scrollbar pb-2 md:pb-0">
+        <div className="flex flex-col sm:flex-row gap-3.5 sm:gap-6 lg:gap-10 text-xs w-full overflow-x-auto no-scrollbar pb-1 md:pb-0">
           <div className="flex items-center gap-3 shrink-0 group cursor-default">
             <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0 group-hover:bg-gold/20 group-hover:scale-110 transition-all duration-500">
               <Ruler className="w-3.5 h-3.5 text-gold" />
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Alignment Tolerance</span>
+              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300 text-xs">Alignment Tolerance</span>
               <span className="text-[10px] text-zinc-300 font-mono">&lt; 2.0mm Plumb Dev</span>
             </div>
           </div>
@@ -206,7 +237,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
               <ShieldCheck className="w-3.5 h-3.5 text-gold" />
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Material Baseline</span>
+              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300 text-xs">Material Baseline</span>
               <span className="text-[10px] text-zinc-300 font-mono">Certified Concrete Mix</span>
             </div>
           </div>
@@ -216,20 +247,20 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
               <Scale className="w-3.5 h-3.5 text-gold" />
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Rebar Reinforcement</span>
+              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300 text-xs">Rebar Reinforcement</span>
               <span className="text-[10px] text-zinc-300 font-mono">Fe500D Seismic Steel</span>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto shrink-0 mt-2 md:mt-0">
+        <div className="hidden md:flex flex-col sm:flex-row gap-4 w-full md:w-auto shrink-0 mt-2 md:mt-0">
           <a href={getWhatsAppLink(WHATSAPP_MESSAGES.general)} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-            <Button variant="accent" className="w-full px-7" isMuted={isMuted} soundType="cta">
+            <Button variant="accent" className="w-full px-7 min-h-[44px]" isMuted={isMuted} soundType="cta">
               Connect on WhatsApp
             </Button>
           </a>
           <a href="#services" className="w-full sm:w-auto">
-            <Button variant="secondary" className="w-full px-7" isMuted={isMuted} soundType="click">
+            <Button variant="secondary" className="w-full px-7 min-h-[44px]" isMuted={isMuted} soundType="click">
               Review Specifications
             </Button>
           </a>

@@ -1,12 +1,13 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import Heading from '@/components/ui/Heading';
 import Card from '@/components/ui/Card';
 import { Target, ShieldCheck, Ruler, Scale } from 'lucide-react';
 
 export const WhyChooseUs = () => {
+  const shouldReduceMotion = useReducedMotion();
   const metrics = [
     {
       icon: <Ruler className="w-6 h-6 text-zinc-400 group-hover:text-gold transition-colors duration-500" />,
@@ -35,23 +36,23 @@ export const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="relative py-24 md:py-36 bg-section-alt3 border-t border-white/5 concrete-texture">
+    <section className="relative py-16 md:py-24 bg-section-alt3 border-t border-white/5 concrete-texture">
       {/* Visual references */}
       {/* Visual references removed */}
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
+      <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex flex-col gap-12 md:gap-16">
         {/* Section header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-3.5"
         >
           <Heading level={2} sectionTag="Control Parameters">
             Engineered Building Benchmarks
           </Heading>
-          <p className="text-zinc-300 text-sm max-w-2xl font-light leading-relaxed">
+          <p className="text-zinc-300 text-xs sm:text-sm max-w-2xl font-light leading-relaxed">
             Our construction process is guided by verified material tests and dimensional checks, not marketing slogans.
           </p>
         </motion.div>
@@ -65,16 +66,16 @@ export const WhyChooseUs = () => {
             hidden: { opacity: 0 },
             visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
           }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6"
         >
           {metrics.map((item, idx) => (
             <motion.div key={idx} variants={{
-              hidden: { opacity: 0, y: 35, scale: 0.97 },
-              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
             }}>
-              <Card hoverEffect={true} className="border border-white/5 bg-card-surf shadow-sm flex flex-col justify-between h-full">
-              <div className="flex flex-col gap-5">
-                <div className="flex justify-between items-center mb-2">
+              <Card hoverEffect={true} className="border border-white/5 bg-card-surf shadow-sm flex flex-col justify-between h-full !p-5">
+              <div className="flex flex-col gap-4">
+                <div className="flex justify-between items-center mb-1">
                   {item.icon}
                 </div>
                 <div className="flex flex-col gap-2">

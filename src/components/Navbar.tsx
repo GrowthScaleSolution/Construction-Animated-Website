@@ -25,7 +25,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
         setIsScrolled(false);
       }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -46,7 +46,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
           : 'bg-transparent border-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex justify-between items-center gap-3">
         {/* Branding wordmark */}
         <Logo />
 
@@ -66,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
         </div>
 
         {/* Right controls */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6 shrink-0">
           {/* Sound Toggle */}
           <button
             onClick={onToggleSound}
@@ -103,16 +103,18 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
         </div>
 
         {/* Mobile controls */}
-        <div className="flex lg:hidden items-center gap-4">
+        <div className="flex lg:hidden items-center gap-2 sm:gap-4 shrink-0">
           <button
             onClick={onToggleSound}
             className="text-arch-grey hover:text-gold transition-colors duration-300 p-2"
+            title={isMuted ? 'Unmute UI audio' : 'Mute UI audio'}
           >
             {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4 text-gold" />}
           </button>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="text-white hover:text-gold transition-colors duration-300 p-2"
+            title="Menu"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -127,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:hidden absolute top-full left-0 w-full bg-obsidian border-b border-white/10 flex flex-col p-6 gap-6 font-sans text-xs tracking-widest uppercase overflow-hidden"
+            className="lg:hidden absolute top-full left-0 w-full bg-obsidian/95 backdrop-blur-xl border-b border-white/10 flex flex-col p-5 gap-5 font-sans text-[11px] tracking-widest uppercase overflow-hidden concrete-texture"
           >
             {navLinks.map((link) => (
               <a
@@ -146,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="mt-2"
             >
-              <Button variant="accent" className="w-full" isMuted={isMuted} soundType="cta">
+              <Button variant="accent" className="w-full text-[11px] py-3.5" isMuted={isMuted} soundType="cta">
                 Get Estimate (WhatsApp)
               </Button>
             </a>

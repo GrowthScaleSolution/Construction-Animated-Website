@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -17,10 +17,12 @@ export const Heading: React.FC<HeadingProps> = ({
   className,
   ...props
 }) => {
+  const shouldReduceMotion = useReducedMotion();
+
   const renderTag = () => {
     const classNames = cn(
       "text-white uppercase font-display",
-      level === 1 && "text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02]",
+      level === 1 && "text-[clamp(2.1rem,7vw,4.5rem)] font-extrabold tracking-tighter leading-[1.02]",
       level === 2 && "text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.05]",
       level === 3 && "text-xl md:text-2xl font-bold tracking-tight leading-snug",
       level === 4 && "text-xs md:text-sm font-semibold tracking-[0.2em] text-white/95",
@@ -28,10 +30,10 @@ export const Heading: React.FC<HeadingProps> = ({
     );
 
     const animationProps = {
-      initial: { opacity: 0, y: 30, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)' },
-      whileInView: { opacity: 1, y: 0, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' },
+      initial: { opacity: 0, y: shouldReduceMotion ? 0 : 15 },
+      whileInView: { opacity: 1, y: 0 },
       viewport: { once: true, margin: "-80px" },
-      transition: { duration: 1.1, delay: 0.05, ease: [0.16, 1, 0.3, 1] }
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
     };
 
     switch (level) {

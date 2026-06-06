@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import Image from 'next/image';
 import Heading from '@/components/ui/Heading';
@@ -15,6 +15,7 @@ interface ServicesProps {
 }
 
 export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true }) => {
+  const shouldReduceMotion = useReducedMotion();
   const services = [
     {
       id: '01',
@@ -61,11 +62,11 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
   ];
 
   return (
-    <section id="services" className="relative py-24 md:py-36 bg-section-alt2 border-t border-white/5 concrete-texture">
+    <section id="services" className="relative py-16 md:py-24 bg-section-alt2 border-t border-white/5 concrete-texture">
       {/* Structural layout decorations */}
       {/* Structural layout decorations removed */}
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
+      <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex flex-col gap-12 md:gap-16">
         {/* Section header */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -78,7 +79,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
             Civil Construction Services
           </Heading>
           
-          <Button variant="outline" className="px-5 py-3 text-[10px]" onClick={onOpenModal} isMuted={isMuted} soundType="click">
+          <Button variant="outline" className="w-full md:w-auto px-5 py-3 text-[10px] min-h-[44px] flex items-center justify-center" onClick={onOpenModal} isMuted={isMuted} soundType="click">
             Review Technical Specs
           </Button>
         </motion.div>
@@ -95,12 +96,12 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
               transition: { staggerChildren: 0.2 }
             }
           }}
-          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8"
         >
-          {services.map((svc) => (
+           {services.map((svc) => (
             <motion.div key={svc.id} variants={{
-              hidden: { opacity: 0, y: 45, scale: 0.98 },
-              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
             }}>
               <Card className="flex flex-col h-full justify-between bg-card-surf border border-white/10 shadow-lg group hover:-translate-y-1.5 transition-all duration-500 !p-2">
                 <motion.div 
@@ -108,7 +109,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative w-full h-48 md:h-56 overflow-hidden rounded-sm bg-card-surf-light border border-white/5 p-1"
+                  className="relative w-full h-48 md:h-56 overflow-hidden rounded-sm bg-card-surf-light border border-white/5 p-1 shrink-0"
                 >
                   <div className="relative w-full h-full overflow-hidden rounded-sm">
                     <Image 
@@ -122,20 +123,20 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                 </motion.div>
                 
                 <div className="flex flex-col flex-grow p-4 md:p-6">
-                  <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-5">
 
 
-                    <div className="flex flex-col gap-3">
-                      <Heading level={3} className="text-white group-hover:text-gold transition-colors duration-300">{svc.title}</Heading>
-                      <p className="text-zinc-300 text-sm font-light leading-relaxed">
+                    <div className="flex flex-col gap-2.5">
+                      <Heading level={3} className="text-white group-hover:text-gold transition-colors duration-300 text-lg md:text-xl">{svc.title}</Heading>
+                      <p className="text-zinc-300 text-xs sm:text-sm font-light leading-relaxed">
                         {svc.desc}
                       </p>
                     </div>
 
                     {/* Shovel-style bullet lists */}
-                    <ul className="flex flex-col gap-3.5 mt-2">
+                    <ul className="flex flex-col gap-3 mt-1">
                       {svc.bullets.map((bullet, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-xs text-zinc-300 leading-relaxed">
+                        <li key={idx} className="flex items-start gap-2.5 text-xs text-zinc-300 leading-relaxed">
                           <ShovelIcon className="w-3.5 h-3.5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
                           <span>{bullet}</span>
                         </li>
@@ -144,14 +145,14 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                   </div>
 
                   {/* Service specific CTA button */}
-                  <div className="mt-8 pt-6 border-t border-white/5 mt-auto">
+                  <div className="mt-6 pt-5 border-t border-white/5 mt-auto">
                     <a
                       href={getWhatsAppLink(svc.msg)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-full block"
                     >
-                      <Button variant="secondary" className="w-full text-[10px] py-3" isMuted={isMuted} soundType="cta">
+                      <Button variant="secondary" className="w-full text-[10px] py-3 min-h-[44px] flex items-center justify-center" isMuted={isMuted} soundType="cta">
                         {svc.btnText}
                       </Button>
                     </a>

@@ -79,15 +79,22 @@ export default function Home() {
     }
   }, []);
 
-  // Monitor scroll for structural elevation indicator
+  // Monitor scroll for structural elevation indicator (throttled using requestAnimationFrame)
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-      setScrollDepth(progress);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+          const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+          setScrollDepth(progress);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -111,7 +118,7 @@ export default function Home() {
 
       <main className="flex-grow flex flex-col">
         <Hero isMuted={isMuted} />
-        <About />
+        <About isMuted={isMuted} />
         <Services onOpenModal={() => setIsCivilModalOpen(true)} isMuted={isMuted} />
         <InteractiveBlueprint isMuted={isMuted} />
         <WhyChooseUs />

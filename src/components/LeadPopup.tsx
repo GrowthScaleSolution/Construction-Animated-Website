@@ -33,29 +33,31 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
       triggerPopup();
     }, 7000);
 
-    // Trigger 2: Scroll past second section (1.5 to 2 sections down)
-    const handleScroll = () => {
-      // Services section starts after Hero (100vh) and About (~700px)
+    // Trigger 2: Scroll past second section (using IntersectionObserver to prevent scroll lag)
+    let observer: IntersectionObserver | null = null;
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              triggerPopup();
+            }
+          });
+        },
+        { rootMargin: '0px 0px -10% 0px', threshold: 0 }
+      );
+      
       const servicesSection = document.getElementById('services');
       if (servicesSection) {
-        const rect = servicesSection.getBoundingClientRect();
-        // Trigger if the top of Services enters the viewport
-        if (rect.top <= window.innerHeight) {
-          triggerPopup();
-        }
-      } else {
-        // Fallback calculation using window scroll offset
-        if (window.scrollY > window.innerHeight * 1.3) {
-          triggerPopup();
-        }
+        observer.observe(servicesSection);
       }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    }
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, [hasBeenTriggered]);
 
