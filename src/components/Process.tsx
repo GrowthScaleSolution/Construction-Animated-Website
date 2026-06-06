@@ -29,7 +29,7 @@ export const Process = () => {
   ];
 
   return (
-    <section id="process" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5">
+    <section id="process" className="relative py-24 md:py-36 bg-section-alt1 border-t border-white/5 concrete-texture">
       {/* CAD line aesthetics removed */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
@@ -62,8 +62,8 @@ export const Process = () => {
         >
           {steps.map((step, idx) => (
             <motion.div key={idx} variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: 40, scale: 0.96 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.9, ease: [0.16, 1, 0.3, 1] } }
             }} className="flex flex-col gap-6 relative group select-none">
               {/* Horizontal line joining steps on desktop */}
               {idx < 3 && (
@@ -71,7 +71,7 @@ export const Process = () => {
               )}
               
               {/* Step indicator */}
-              <div className="w-10 h-10 border border-white/10 group-hover:border-gold text-white/60 group-hover:text-gold bg-charcoal-dark flex items-center justify-center font-mono text-xs z-10 transition-colors duration-500">
+              <div className="w-10 h-10 border border-white/10 group-hover:border-gold text-white/60 group-hover:text-gold bg-card-surf flex items-center justify-center font-mono text-xs z-10 transition-colors duration-500">
                 {step.num}
               </div>
 

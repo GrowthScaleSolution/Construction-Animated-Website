@@ -55,7 +55,7 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
   const currentLayer = layers.find((l) => l.id === activeLayer)!;
 
   return (
-    <section id="blueprints" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5 overflow-hidden">
+    <section id="blueprints" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden concrete-texture">
       {/* Drafting metadata removed for cleaner look */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16">
@@ -101,7 +101,7 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
               ))}
             </div>
 
-            <Card hoverEffect={false} className="border-white/10 bg-charcoal-light/10">
+            <Card hoverEffect={false} className="border-white/10 bg-card-surf">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentLayer.id}
@@ -141,7 +141,7 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex justify-center items-center order-1 lg:order-2"
           >
-            <div className="relative w-full max-w-[500px] aspect-square bg-charcoal-dark border border-white/10 blueprint-grid p-4 sm:p-8 flex items-center justify-center">
+            <div className="relative w-full max-w-[500px] aspect-square bg-section-alt2 border border-white/10 blueprint-grid p-4 sm:p-8 flex items-center justify-center">
               {/* Corner markers removed */}
 
               <svg className="w-full h-full text-white/25" viewBox="0 0 200 200" fill="none">

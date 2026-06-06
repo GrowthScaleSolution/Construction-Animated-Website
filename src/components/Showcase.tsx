@@ -36,7 +36,7 @@ export const Showcase = () => {
   ];
 
   return (
-    <section id="showcase" className="relative py-24 md:py-36 bg-concrete-light border-t border-black/10">
+    <section id="showcase" className="relative py-24 md:py-36 bg-section-alt2 border-t border-white/5 concrete-texture">
       {/* Decorative details */}
       {/* Decorative details removed */}
 
@@ -49,10 +49,10 @@ export const Showcase = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col gap-4"
         >
-          <Heading level={2} sectionTag="Active Portfolio" className="text-charcoal-dark">
+          <Heading level={2} sectionTag="Active Portfolio" className="text-white">
             Active Building Showcases
           </Heading>
-          <p className="text-zinc-700 text-sm max-w-2xl font-light leading-relaxed">
+          <p className="text-zinc-300 text-sm max-w-2xl font-light leading-relaxed">
             A listing of active civil construction and concrete framing scopes managed under our strict engineering parameters.
           </p>
         </motion.div>
@@ -62,20 +62,24 @@ export const Showcase = () => {
           
           {/* Featured Image */}
           <motion.div 
-            initial={{ opacity: 0, x: -30, clipPath: 'inset(10% 0 0 0)' }}
-            whileInView={{ opacity: 1, x: 0, clipPath: 'inset(0% 0 0 0)' }}
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 relative w-full min-h-[400px] lg:min-h-[600px] rounded-sm overflow-hidden group"
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 p-2 bg-card-surf border border-white/10 shadow-2xl shadow-black/85 rounded-sm group overflow-hidden flex flex-col"
           >
-            <Image 
-              src="/images/project-site-work.jpeg" 
-              alt="Active Construction Site Work" 
-              fill 
-              className="object-cover group-hover:scale-105 transition-transform duration-1000"
-            />
-            <div className="absolute bottom-6 left-6 bg-obsidian/90 border border-white/10 backdrop-blur-sm text-white px-4 py-2 font-mono text-[10px] uppercase tracking-widest">
-              FEATURED ACTIVE SITE
+            <div className="relative w-full flex-grow min-h-[400px] lg:min-h-[580px] overflow-hidden rounded-sm">
+              <Image 
+                src="/images/project-site-work.jpeg" 
+                alt="Active civil construction and structural concrete framing at our primary project site" 
+                fill 
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
+                className="object-cover group-hover:scale-103 transition-transform duration-1000 ease-out"
+                priority
+              />
+              <div className="absolute bottom-6 left-6 bg-obsidian/90 border border-white/10 backdrop-blur-sm text-white px-4 py-2 font-mono text-[10px] uppercase tracking-widest z-10">
+                FEATURED ACTIVE SITE
+              </div>
             </div>
           </motion.div>
 
@@ -92,31 +96,31 @@ export const Showcase = () => {
           >
             {projects.map((proj) => (
               <motion.div key={proj.id} variants={{
-                hidden: { opacity: 0, x: 30 },
-                visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+                hidden: { opacity: 0, x: 45, scale: 0.98 },
+                visible: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
               }} className="h-full">
-                <Card hoverEffect={true} className="flex flex-col h-full justify-between bg-concrete-sand border-black/5 shadow-sm">
+                <Card hoverEffect={true} className="flex flex-col h-full justify-between bg-card-surf border border-white/5 shadow-sm">
                   <div className="flex flex-col gap-4">
-                    <div className="flex justify-between items-start font-mono text-[9px] text-charcoal-dark/40 uppercase">
+                    <div className="flex justify-between items-start font-mono text-[9px] text-zinc-400 uppercase">
                       <span>{proj.id}</span>
-                      <span className="text-charcoal-dark/50 group-hover:text-gold transition-colors duration-500 font-semibold">{proj.status}</span>
+                      <span className="text-zinc-300 group-hover:text-gold transition-colors duration-500 font-semibold">{proj.status}</span>
                     </div>
                     
                     <div className="flex flex-col gap-1">
                       <span className="font-mono text-[9px] text-gold uppercase tracking-[0.2em]">Featured Project</span>
-                      <Heading level={3} className="text-lg md:text-xl font-semibold mt-1 text-charcoal-dark">
+                      <Heading level={3} className="text-lg md:text-xl font-semibold mt-1 text-white">
                         {proj.title}
                       </Heading>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs text-zinc-800 mt-1">
-                      <MapPin className="w-3.5 h-3.5 text-charcoal-dark/40 group-hover:text-gold transition-colors duration-500 shrink-0" />
+                    <div className="flex items-center gap-2 text-xs text-zinc-300 mt-1">
+                      <MapPin className="w-3.5 h-3.5 text-zinc-500 group-hover:text-gold transition-colors duration-500 shrink-0" />
                       <span>{proj.location}</span>
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs text-zinc-800 border-t border-black/10 pt-3 mt-1">
-                      <Layers className="w-3.5 h-3.5 text-charcoal-dark/40 shrink-0" />
-                      <span className="font-mono text-[9px] text-charcoal-dark/50 font-medium">Project {proj.id}</span>
+                    <div className="flex items-center gap-2 text-xs text-zinc-300 border-t border-white/5 pt-3 mt-1">
+                      <Layers className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                      <span className="font-mono text-[9px] text-zinc-400 font-medium">Project {proj.id}</span>
                     </div>
                   </div>
                 </Card>

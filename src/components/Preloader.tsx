@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { startMixerSound, stopMixerSound } from '@/lib/sound';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const Preloader = ({ isMuted }: { isMuted: boolean }) => {
+export const Preloader = ({ isMuted, onComplete }: { isMuted: boolean; onComplete?: () => void }) => {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,6 +27,7 @@ export const Preloader = ({ isMuted }: { isMuted: boolean }) => {
         setTimeout(() => {
           stopMixerSound();
           setIsLoading(false);
+          if (onComplete) onComplete();
         }, 300);
       }
     };
@@ -36,7 +37,7 @@ export const Preloader = ({ isMuted }: { isMuted: boolean }) => {
     return () => {
       stopMixerSound();
     };
-  }, [isMuted]);
+  }, [isMuted, onComplete]);
 
   return (
     <AnimatePresence>

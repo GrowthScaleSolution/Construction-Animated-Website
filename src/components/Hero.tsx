@@ -9,10 +9,10 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 
 export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [rotateDeg, setRotateDeg] = useState({ rX: 0, rY: 0 });
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [isVideoError, setIsVideoError] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
@@ -33,11 +33,44 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (!isVideoLoaded) setIsVideoError(true);
-    }, 4000);
-    return () => clearTimeout(timer);
-  }, [isVideoLoaded]);
+    const video = videoRef.current;
+    if (!video) return;
+
+    // Direct configuration settings
+    video.preload = "metadata";
+
+    // Intersection Observer to ensure video autoplays safely when visible, and pauses when scrolled out of view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+              playPromise
+                .then(() => {
+                  setIsVideoLoaded(true);
+                })
+                .catch((error) => {
+                  console.log("Hero video autoplay failed or was prevented:", error);
+                });
+            }
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.05 }
+    );
+
+    observer.observe(video);
+
+    // Force call load to start buffering metadata
+    video.load();
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   const { scrollY } = useScroll();
   const videoY = useTransform(scrollY, [0, 1000], [0, 250]);
@@ -53,25 +86,35 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         className="absolute inset-0 w-full h-full z-0 pointer-events-none"
       >
         <video
+          ref={videoRef}
           autoPlay
           muted
           loop
           playsInline
           preload="metadata"
           onPlay={() => setIsVideoLoaded(true)}
-          onError={() => setIsVideoError(true)}
+          onCanPlay={() => setIsVideoLoaded(true)}
+          onLoadedData={() => setIsVideoLoaded(true)}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            isVideoLoaded && !isVideoError ? 'opacity-100' : 'opacity-0'
+            isVideoLoaded ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <source src="/construction-hero-video-muted.mp4" type="video/mp4" />
+          <source src="/videos/construction-hero-video-muted.mp4" type="video/mp4" />
         </video>
       </motion.div>
 
       {/* Gradient Overlays for Readability and Vignette */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 pointer-events-none" />
-      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 65%, rgba(0,0,0,0.3) 100%)' }} />
+      {/* Base overlay for general text contrast */}
+      <div className="absolute inset-0 z-0 bg-black/40 pointer-events-none" />
+      
+      {/* Left-to-right gradient: darker on the left to support the text, lighter on the right to show the video */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/70 via-black/45 to-black/15 pointer-events-none" />
+      
+      {/* Bottom-up gradient for vignette/footer transition */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none" />
+      
+      {/* Edge vignette */}
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 55%, rgba(0,0,0,0.45) 100%)' }} />
       
       {!isTouch && (
         <div 
@@ -79,8 +122,6 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
           style={{ background: `radial-gradient(circle 600px at ${coords.x}px ${coords.y}px, rgba(255, 200, 10, 0.08), transparent 60%)` }}
         />
       )}
-
-      {/* Coords overlay removed to reduce visual clutter */}
 
       <motion.div 
         style={!isTouch ? {
@@ -92,7 +133,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           
           <div className="lg:col-span-7 flex flex-col items-start gap-4 md:gap-6 text-left">
-            <span className="text-[10px] md:text-xs font-medium tracking-widest text-gold uppercase">
+            <span className="text-[10px] md:text-xs font-semibold tracking-widest text-gold uppercase">
               Civil & Building Construction
             </span>
             
@@ -100,7 +141,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
               Engineering <br />the Inevitable.
             </Heading>
  
-            <p className="text-arch-grey text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-1 md:mt-2">
+            <p className="text-zinc-200 text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-1 md:mt-2">
               Premium structural execution, concrete framing, and foundation engineering. Operating under strict, code-compliant parameters in Nallasopara, Mumbai.
             </p>
           </div>
@@ -109,7 +150,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
             <motion.div 
               style={!isTouch ? { x: rotateDeg.rY * 1.5, y: -rotateDeg.rX * 1.5 } : undefined}
               whileHover={{ scale: 1.02 }}
-              className="relative bg-charcoal-dark/25 border border-white/10 p-6 md:p-8 backdrop-blur-lg w-full max-w-md overflow-hidden group hover:bg-charcoal-dark/40 hover:border-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-black/40"
+              className="relative bg-obsidian/85 border border-white/15 p-6 md:p-8 backdrop-blur-xl w-full max-w-md overflow-hidden group hover:bg-black/95 hover:border-gold/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/75"
             >
               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
@@ -118,7 +159,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
 
               <div className="flex flex-col gap-4 relative z-10">
                 <div className="flex justify-between items-start">
-                  <span className="text-[10px] font-medium text-gold uppercase tracking-widest">Quality Assurance</span>
+                  <span className="text-[10px] font-semibold text-gold uppercase tracking-widest">Quality Assurance</span>
                   <ShieldCheck className="w-4 h-4 text-gold/60 group-hover:text-gold transition-colors duration-300" />
                 </div>
                 
@@ -126,11 +167,11 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
                   Structural Integrity
                 </h4>
                 
-                <p className="text-sm text-arch-grey leading-relaxed font-light">
+                <p className="text-sm text-zinc-300 leading-relaxed font-light">
                   Every building core is cast to support complex vertical load stresses, ensuring lasting durability and safety.
                 </p>
 
-                <div className="flex flex-col gap-3 mt-2 pt-4 border-t border-white/10 text-[11px] text-arch-grey tracking-wide uppercase">
+                <div className="flex flex-col gap-3 mt-2 pt-4 border-t border-white/10 text-[11px] text-zinc-400 tracking-wide uppercase">
                   <div className="flex justify-between">
                     <span>Seismic Standard</span>
                     <span className="text-white font-medium">IS:1893</span>
@@ -156,7 +197,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
             </div>
             <div className="flex flex-col">
               <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Alignment Tolerance</span>
-              <span className="text-[10px] text-arch-grey font-mono">&lt; 2.0mm Plumb Dev</span>
+              <span className="text-[10px] text-zinc-300 font-mono">&lt; 2.0mm Plumb Dev</span>
             </div>
           </div>
 
@@ -166,7 +207,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
             </div>
             <div className="flex flex-col">
               <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Material Baseline</span>
-              <span className="text-[10px] text-arch-grey font-mono">Certified Concrete Mix</span>
+              <span className="text-[10px] text-zinc-300 font-mono">Certified Concrete Mix</span>
             </div>
           </div>
 
@@ -176,7 +217,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
             </div>
             <div className="flex flex-col">
               <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Rebar Reinforcement</span>
-              <span className="text-[10px] text-arch-grey font-mono">Fe500D Seismic Steel</span>
+              <span className="text-[10px] text-zinc-300 font-mono">Fe500D Seismic Steel</span>
             </div>
           </div>
         </div>

@@ -27,6 +27,19 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
     };
   }, [isOpen]);
 
+  // Handle escape key to close modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   // Play sound when the modal opens
   useEffect(() => {
     if (isOpen) {
@@ -51,42 +64,43 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
             className="absolute inset-0 bg-obsidian/85 backdrop-blur-md cursor-pointer"
           />
 
-          {/* Modal box */}
+          {/* Modal box (always fits max-h-[85vh] and doesn't cut off content) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-charcoal-dark border border-white/10 w-full max-w-3xl max-h-[85vh] overflow-y-auto relative z-10 flex flex-col p-6 md:p-8 no-scrollbar"
+            className="bg-obsidian border border-white/10 w-full max-w-3xl max-h-[85vh] relative z-10 flex flex-col overflow-hidden select-none rounded-sm concrete-texture shadow-2xl shadow-black/80"
           >
             {/* Corner structural markings */}
-            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-gold" />
-            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-gold" />
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-gold" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-gold" />
+            <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-gold z-30 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-gold z-30 pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-gold z-30 pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-gold z-30 pointer-events-none" />
 
-            {/* Header */}
-            <div className="flex justify-between items-start border-b border-white/10 pb-5 mb-6">
+            {/* Header (Always Visible) */}
+            <div className="flex justify-between items-start border-b border-white/10 p-6 md:px-8 md:pt-8 md:pb-5 z-20 shrink-0 bg-obsidian">
               <Heading level={3} sectionTag="ENGINEERING DATASHEET">
                 Civil Execution Specifications
               </Heading>
               <button
                 onClick={onClose}
                 className="text-arch-grey hover:text-gold transition-colors duration-300 p-1 cursor-pointer"
+                title="Close"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Content body */}
-            <div className="flex flex-col gap-6 text-sm text-arch-grey leading-relaxed">
+            {/* Content body (Scrollable) */}
+            <div className="flex-grow overflow-y-auto px-6 md:px-8 py-6 no-scrollbar flex flex-col gap-6 text-sm text-arch-grey leading-relaxed z-10">
               <p>
                 This datasheet details the structural tolerances, concrete grade designs, and reinforcement specifications applied to our building frames. Every calculation is calibrated in accordance with building code requirements.
               </p>
 
               {/* Concrete Grades Card */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-white/5 pt-6">
-                <div className="border border-white/5 bg-charcoal-light/30 p-4">
+                <div className="border border-white/5 bg-card-surf p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Construction className="w-4 h-4 text-gold" />
                     <span className="font-display font-semibold text-white">M25 Concrete</span>
@@ -96,7 +110,7 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
                   </p>
                 </div>
                 
-                <div className="border border-white/5 bg-charcoal-light/30 p-4">
+                <div className="border border-white/5 bg-card-surf p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Shield className="w-4 h-4 text-gold" />
                     <span className="font-display font-semibold text-white">M30 Concrete</span>
@@ -106,7 +120,7 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
                   </p>
                 </div>
 
-                <div className="border border-white/5 bg-charcoal-light/30 p-4">
+                <div className="border border-white/5 bg-card-surf p-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Landmark className="w-4 h-4 text-gold" />
                     <span className="font-display font-semibold text-white">Reinforcement</span>
@@ -125,7 +139,7 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
                 <div className="overflow-x-auto">
                   <table className="w-full text-left border-collapse border border-white/5">
                     <thead>
-                      <tr className="bg-charcoal-light/40 font-display text-white text-xs border-b border-white/10">
+                      <tr className="bg-card-surf font-display text-white text-xs border-b border-white/10">
                         <th className="p-3 border-r border-white/5">Parameter</th>
                         <th className="p-3 border-r border-white/5">Designed Tolerance</th>
                         <th className="p-3">Audit Method</th>
@@ -153,8 +167,8 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
               </div>
             </div>
 
-            {/* Footer containing multiple WhatsApp options and close trigger */}
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10 pt-5 mt-6">
+            {/* Footer containing multiple WhatsApp options and close trigger (Always Visible) */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10 p-6 md:px-8 md:pb-8 md:pt-5 z-20 shrink-0 bg-obsidian">
               <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
                 <a
                   href={getWhatsAppLink(WHATSAPP_MESSAGES.siteVisit)}

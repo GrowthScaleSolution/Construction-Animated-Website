@@ -15,7 +15,7 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }) => {
   return (
-    <section id="contact" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5 overflow-hidden">
+    <section id="contact" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden concrete-texture">
       {/* Decorative details removed */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
@@ -38,13 +38,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left Side: Contact Information Cards */}
           <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, x: -40, scale: 0.98 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-5 flex flex-col gap-6"
           >
-            <Card hoverEffect={true} className="border-white/5 bg-charcoal-dark/40">
+            <Card hoverEffect={true} className="border border-white/5 bg-card-surf">
               <div className="flex items-start gap-4">
                 <MapPin className="w-5 h-5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-1" />
                 <div className="flex flex-col gap-1">
@@ -65,7 +65,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
               </div>
             </Card>
 
-            <Card hoverEffect={true} className="border-white/5 bg-charcoal-dark/40">
+            <Card hoverEffect={true} className="border border-white/5 bg-card-surf">
               <div className="flex items-start gap-4">
                 <PhoneCall className="w-5 h-5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-1" />
                 <div className="flex flex-col gap-1">
@@ -93,10 +93,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
 
           {/* Right Side: Visual Map & Site Visit Image */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, scale: 0.96, y: 30 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-7 flex flex-col gap-6"
           >
             {/* Site Visit Image Card */}
@@ -105,37 +105,40 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-50px" }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="bg-charcoal-dark border border-white/10 relative flex items-end justify-start h-[250px] lg:h-[300px] rounded-sm overflow-hidden group"
+              className="bg-card-surf border border-white/10 p-2 shadow-2xl rounded-sm overflow-hidden group flex flex-col relative"
             >
-              <Image 
-                src="/images/contact-site-visit.jpeg"
-                alt="Request a Site Visit"
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-1000"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent group-hover:from-black/55 transition-colors duration-500" />
-              
-              <div className="relative z-10 p-6 md:p-8 flex flex-col gap-2 w-full">
-                <span className="font-mono text-[10px] text-gold uppercase tracking-[0.2em]">In-Person Tour</span>
-                <h4 className="font-display font-semibold text-white text-xl md:text-2xl">Schedule a Site Visit</h4>
-                <p className="text-sm text-arch-grey leading-relaxed max-w-md font-light">
-                  Inspect our active structural framing, foundation pours, and concrete quality directly at our active sites.
-                </p>
-                <a
-                  href={getWhatsAppLink('Hello, I would like to request a site visit to inspect your active construction projects.')}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-block w-max"
-                >
-                  <Button variant="accent" className="px-6 py-2.5 text-xs" isMuted={isMuted} soundType="cta">
-                    Request Site Visit
-                  </Button>
-                </a>
+              <div className="relative w-full h-[250px] lg:h-[300px] rounded-sm overflow-hidden flex items-end justify-start">
+                <Image 
+                  src="/images/contact-site-visit.jpeg"
+                  alt="In-person site inspection of active steel tying and concrete pouring"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
+                  className="object-cover group-hover:scale-103 transition-transform duration-1000 ease-out"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent group-hover:from-black/40 transition-colors duration-500" />
+                
+                <div className="relative z-10 p-6 md:p-8 flex flex-col gap-2 w-full">
+                  <span className="font-mono text-[10px] text-gold uppercase tracking-[0.2em]">In-Person Tour</span>
+                  <h4 className="font-display font-semibold text-white text-xl md:text-2xl">Schedule a Site Visit</h4>
+                  <p className="text-sm text-arch-grey leading-relaxed max-w-md font-light">
+                    Inspect our active structural framing, foundation pours, and concrete quality directly at our active sites.
+                  </p>
+                  <a
+                    href={getWhatsAppLink('Hello, I would like to request a site visit to inspect your active construction projects.')}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-block w-max"
+                  >
+                    <Button variant="accent" className="px-6 py-2.5 text-xs" isMuted={isMuted} soundType="cta">
+                      Request Site Visit
+                    </Button>
+                  </a>
+                </div>
               </div>
             </motion.div>
 
             {/* Embedded Google Map */}
-            <div className="bg-charcoal-dark border border-white/15 shadow-2xl shadow-black/80 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group hover:border-gold/30 transition-all duration-500">
+            <div className="bg-card-surf border border-white/15 shadow-2xl shadow-black/80 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group hover:border-gold/30 transition-all duration-500">
               <iframe 
                  src="https://maps.google.com/maps?q=Nallasopara,+Mumbai&t=m&z=13&output=embed&iwloc=near"
                  width="100%" 

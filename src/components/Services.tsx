@@ -61,7 +61,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
   ];
 
   return (
-    <section id="services" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5">
+    <section id="services" className="relative py-24 md:py-36 bg-section-alt2 border-t border-white/5 concrete-texture">
       {/* Structural layout decorations */}
       {/* Structural layout decorations removed */}
 
@@ -99,26 +99,29 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
         >
           {services.map((svc) => (
             <motion.div key={svc.id} variants={{
-              hidden: { opacity: 0, y: 30 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: 45, scale: 0.98 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
             }}>
-              <Card className="flex flex-col h-full justify-between bg-concrete-dark border-white/5 shadow-md group hover:-translate-y-1 transition-transform duration-500 !p-0">
+              <Card className="flex flex-col h-full justify-between bg-card-surf border border-white/10 shadow-lg group hover:-translate-y-1.5 transition-all duration-500 !p-2">
                 <motion.div 
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-50px" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="relative w-full h-48 md:h-56 overflow-hidden"
+                  className="relative w-full h-48 md:h-56 overflow-hidden rounded-sm bg-card-surf-light border border-white/5 p-1"
                 >
-                  <Image 
-                    src={svc.image} 
-                    alt={svc.title} 
-                    fill 
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
+                  <div className="relative w-full h-full overflow-hidden rounded-sm">
+                    <Image 
+                      src={svc.image} 
+                      alt={`Professional service execution for ${svc.title}`} 
+                      fill 
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
+                      className="object-cover group-hover:scale-103 transition-transform duration-1000 ease-out"
+                    />
+                  </div>
                 </motion.div>
                 
-                <div className="flex flex-col flex-grow p-6 md:p-8">
+                <div className="flex flex-col flex-grow p-4 md:p-6">
                   <div className="flex flex-col gap-6">
 
 

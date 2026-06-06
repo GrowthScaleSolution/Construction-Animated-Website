@@ -127,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:hidden absolute top-full left-0 w-full bg-charcoal-dark border-b border-white/10 flex flex-col p-6 gap-6 font-sans text-xs tracking-widest uppercase overflow-hidden"
+            className="lg:hidden absolute top-full left-0 w-full bg-obsidian border-b border-white/10 flex flex-col p-6 gap-6 font-sans text-xs tracking-widest uppercase overflow-hidden"
           >
             {navLinks.map((link) => (
               <a

@@ -28,10 +28,10 @@ export const Heading: React.FC<HeadingProps> = ({
     );
 
     const animationProps = {
-      initial: { opacity: 0, y: 20 },
-      whileInView: { opacity: 1, y: 0 },
-      viewport: { once: true, margin: "-100px" },
-      transition: { duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+      initial: { opacity: 0, y: 30, clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)' },
+      whileInView: { opacity: 1, y: 0, clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)' },
+      viewport: { once: true, margin: "-80px" },
+      transition: { duration: 1.1, delay: 0.05, ease: [0.16, 1, 0.3, 1] }
     };
 
     switch (level) {
@@ -51,10 +51,10 @@ export const Heading: React.FC<HeadingProps> = ({
     <div className="flex flex-col gap-1.5 font-display select-none">
       {sectionTag && (
         <motion.span 
-          initial={{ opacity: 0, x: -10 }}
+          initial={{ opacity: 0, x: -15 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="text-[10px] uppercase tracking-[0.35em] text-gold font-semibold flex items-center gap-2"
         >
           <span className="w-1.5 h-1.5 border border-gold/40 rotate-45 inline-block" />

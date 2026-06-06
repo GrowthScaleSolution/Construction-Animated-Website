@@ -16,12 +16,30 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import CivilModal from '@/components/CivilModal';
 import WhatsAppCTA from '@/components/WhatsAppCTA';
-import { playClickSound } from '@/lib/sound';
+import { playClickSound, preloadAudioFiles, prewarmAudio } from '@/lib/sound';
 
 export default function Home() {
   const [isMuted, setIsMuted] = useState(true);
   const [isCivilModalOpen, setIsCivilModalOpen] = useState(false);
   const [scrollDepth, setScrollDepth] = useState(0);
+  const [isPreloaded, setIsPreloaded] = useState(false);
+
+  // Handle hash scrolling after preloader finishes
+  useEffect(() => {
+    if (!isPreloaded) return;
+
+    // Check layout hash and scroll smoothly to the target element if present
+    const hash = window.location.hash;
+    if (hash) {
+      const timer = setTimeout(() => {
+        const targetElement = document.querySelector(hash);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isPreloaded]);
 
   // Initialize Lenis smooth scrolling for desktop
   useEffect(() => {
@@ -52,7 +70,12 @@ export default function Home() {
   useEffect(() => {
     const storedMute = localStorage.getItem('suc_sound_muted');
     if (storedMute !== null) {
-      setIsMuted(storedMute === 'true');
+      const isMutedVal = storedMute === 'true';
+      setIsMuted(isMutedVal);
+      if (!isMutedVal) {
+        preloadAudioFiles();
+        prewarmAudio();
+      }
     }
   }, []);
 
@@ -78,7 +101,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-obsidian text-white relative font-sans antialiased selection:bg-gold selection:text-obsidian flex flex-col">
-      <Preloader isMuted={isMuted} />
+      <Preloader isMuted={isMuted} onComplete={() => setIsPreloaded(true)} />
       <LeadPopup isMuted={isMuted} />
       <Navbar isMuted={isMuted} onToggleSound={handleToggleSound} />
 

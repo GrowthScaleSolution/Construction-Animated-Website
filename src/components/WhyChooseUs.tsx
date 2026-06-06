@@ -9,25 +9,25 @@ import { Target, ShieldCheck, Ruler, Scale } from 'lucide-react';
 export const WhyChooseUs = () => {
   const metrics = [
     {
-      icon: <Ruler className="w-6 h-6 text-black/45 group-hover:text-gold transition-colors duration-500" />,
+      icon: <Ruler className="w-6 h-6 text-zinc-400 group-hover:text-gold transition-colors duration-500" />,
       title: 'Deviation Tolerances',
       metric: '< 2.0mm Plumb Deflection',
       desc: 'All structural columns and retaining profiles are calibrated with precision optical lasers to meet zero deviation limits.',
     },
     {
-      icon: <ShieldCheck className="w-6 h-6 text-black/45 group-hover:text-gold transition-colors duration-500" />,
+      icon: <ShieldCheck className="w-6 h-6 text-zinc-400 group-hover:text-gold transition-colors duration-500" />,
       title: 'Compressive Resistance',
       metric: 'M25 / M30 Grade Baselines',
       desc: 'We perform strict concrete cube compression testing on every structural pour, rejecting any batches under nominal strengths.',
     },
     {
-      icon: <Target className="w-6 h-6 text-black/45 group-hover:text-gold transition-colors duration-500" />,
+      icon: <Target className="w-6 h-6 text-zinc-400 group-hover:text-gold transition-colors duration-500" />,
       title: 'Precision Layouts',
       metric: '± 1.5mm Axis Accuracy',
       desc: 'Foundation and framing boundaries are plotted using digital station positioning, avoiding grid intersection drift.',
     },
     {
-      icon: <Scale className="w-6 h-6 text-black/45 group-hover:text-gold transition-colors duration-500" />,
+      icon: <Scale className="w-6 h-6 text-zinc-400 group-hover:text-gold transition-colors duration-500" />,
       title: 'Steel Safety Factors',
       metric: 'Fe500D Seismic Grades',
       desc: 'Utilizing certified high-ductility reinforcement steel with tested tensile ratios to guarantee structural elasticity.',
@@ -35,7 +35,7 @@ export const WhyChooseUs = () => {
   ];
 
   return (
-    <section className="relative py-24 md:py-36 bg-concrete-light border-t border-black/10">
+    <section className="relative py-24 md:py-36 bg-section-alt3 border-t border-white/5 concrete-texture">
       {/* Visual references */}
       {/* Visual references removed */}
 
@@ -51,7 +51,7 @@ export const WhyChooseUs = () => {
           <Heading level={2} sectionTag="Control Parameters">
             Engineered Building Benchmarks
           </Heading>
-          <p className="text-zinc-700 text-sm max-w-2xl font-light leading-relaxed">
+          <p className="text-zinc-300 text-sm max-w-2xl font-light leading-relaxed">
             Our construction process is guided by verified material tests and dimensional checks, not marketing slogans.
           </p>
         </motion.div>
@@ -69,23 +69,23 @@ export const WhyChooseUs = () => {
         >
           {metrics.map((item, idx) => (
             <motion.div key={idx} variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+              hidden: { opacity: 0, y: 35, scale: 0.97 },
+              visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
             }}>
-              <Card hoverEffect={true} className="border-black/5 bg-concrete-sand shadow-sm flex flex-col justify-between h-full">
+              <Card hoverEffect={true} className="border border-white/5 bg-card-surf shadow-sm flex flex-col justify-between h-full">
               <div className="flex flex-col gap-5">
                 <div className="flex justify-between items-center mb-2">
                   {item.icon}
                 </div>
                 <div className="flex flex-col gap-2">
-                  <h4 className="font-display font-semibold text-charcoal-dark uppercase text-xs tracking-wider">
+                  <h4 className="font-display font-semibold text-white uppercase text-xs tracking-wider">
                     {item.title}
                   </h4>
-                  <span className="font-mono text-xs text-charcoal-dark font-bold border-l-2 border-gold pl-2">
+                  <span className="font-mono text-xs text-gold font-bold border-l-2 border-gold/40 pl-2">
                     {item.metric}
                   </span>
                 </div>
-                <p className="text-xs text-zinc-800 leading-relaxed font-light">
+                <p className="text-xs text-zinc-300 leading-relaxed font-light">
                   {item.desc}
                 </p>
               </div>

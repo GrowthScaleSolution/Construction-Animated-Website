@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-obsidian: #0A0A0A;
+  --color-obsidian: #070707;
   --color-charcoal-dark: #151515;
   --color-charcoal-light: #1E1E1E;
   --color-concrete-dark: #242424;
@@ -12,12 +12,19 @@
   --color-arch-grey: #A3A3A3;
   --color-border-dark: #262626;
 
+  /* Custom alternates */
+  --color-section-alt1: #101010;
+  --color-section-alt2: #151515;
+  --color-section-alt3: #1B1B1B;
+  --color-card-surf: #181818;
+  --color-card-surf-light: #202020;
+
   --font-display: var(--font-space-grotesk), sans-serif;
   --font-sans: var(--font-outfit), sans-serif;
 }
 
 :root {
-  --background: #0B0B0B;
+  --background: #070707;
   --foreground: #FFFFFF;
 }
 
@@ -120,11 +127,25 @@ body {
 }
 
 .text-outline-thin-dark {
-  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.25);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.15);
   color: transparent;
 }
 
 .text-outline-thick-dark {
-  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.05);
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.03);
   color: transparent;
+}
+
+/* Procedural CSS Concrete/Noise Texture */
+.concrete-texture {
+  position: relative;
+}
+.concrete-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  z-index: 0;
 }

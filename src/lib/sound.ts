@@ -2,6 +2,64 @@
 
 let audioCtx: AudioContext | null = null;
 
+const audioInstances: Record<string, HTMLAudioElement> = {};
+let prewarmed = false;
+
+function getOrCreateAudio(src: string): HTMLAudioElement | null {
+  if (typeof window === 'undefined') return null;
+  if (!audioInstances[src]) {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+    audioInstances[src] = audio;
+  }
+  return audioInstances[src];
+}
+
+export function preloadAudioFiles() {
+  if (typeof window === 'undefined') return;
+  const sources = [
+    '/sounds/premium-click.mp3',
+    '/sounds/popup-open.mp3',
+    '/sounds/cta-confirm.mp3'
+  ];
+  sources.forEach(src => {
+    getOrCreateAudio(src);
+  });
+}
+
+export function prewarmAudio() {
+  if (prewarmed || typeof window === 'undefined') return;
+  
+  const sources = [
+    '/sounds/premium-click.mp3',
+    '/sounds/popup-open.mp3',
+    '/sounds/cta-confirm.mp3'
+  ];
+  
+  sources.forEach(src => {
+    try {
+      const audio = getOrCreateAudio(src);
+      if (audio) {
+        const originalVol = audio.volume;
+        audio.volume = 0.001; // extremely low volume to prewarm safely
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              audio.pause();
+              audio.currentTime = 0;
+              audio.volume = originalVol;
+              prewarmed = true;
+            })
+            .catch(() => {
+              // Ignore blocking errors
+            });
+        }
+      }
+    } catch (e) {}
+  });
+}
+
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
   try {
@@ -100,35 +158,57 @@ function triggerFallback(type: 'click' | 'popup' | 'whoosh' | 'cta', volume: num
 export function playSound(src: string, volume: number = 0.05, isMuted: boolean = true, fallbackType: 'click' | 'popup' | 'whoosh' | 'cta' = 'click') {
   if (isMuted || typeof window === 'undefined') return;
   
+  if (!prewarmed) {
+    prewarmAudio();
+  }
+
   let played = false;
   try {
-    const audio = new Audio(src);
+    const audio = getOrCreateAudio(src);
+    if (!audio) {
+      triggerFallback(fallbackType, volume);
+      return;
+    }
+
     audio.volume = volume;
+    audio.currentTime = 0; // Reset currentTime to 0 before playing to prevent play delays
     
     const playPromise = audio.play();
     if (playPromise !== undefined) {
       playPromise
         .then(() => { played = true; })
         .catch((err) => {
-          if (err.name !== 'NotAllowedError') {
-            triggerFallback(fallbackType, volume);
+          if (err && err.name !== 'NotAllowedError') {
+            try {
+              triggerFallback(fallbackType, volume);
+            } catch (e) {}
           }
         });
     }
     
     audio.onerror = () => {
       if (!played) {
-        triggerFallback(fallbackType, volume);
+        try {
+          triggerFallback(fallbackType, volume);
+        } catch (e) {}
         played = true;
       }
     };
   } catch (error) {
-    triggerFallback(fallbackType, volume);
+    try {
+      triggerFallback(fallbackType, volume);
+    } catch (e) {}
   }
 }
 
 // Named exports
-export const playClickSound = (isMuted: boolean) => playSound('/sounds/premium-click.mp3', 0.40, isMuted, 'click');
+export const playClickSound = (isMuted: boolean) => {
+  if (!isMuted) {
+    preloadAudioFiles();
+    prewarmAudio();
+  }
+  playSound('/sounds/premium-click.mp3', 0.40, isMuted, 'click');
+};
 export const playPopupOpenSound = (isMuted: boolean) => playSound('/sounds/popup-open.mp3', 0.40, isMuted, 'popup');
 export const playWhooshSound = (isMuted: boolean) => playSound('/sounds/soft-whoosh.mp3', 0.0, isMuted, 'whoosh');
 export const playCTAConfirmSound = (isMuted: boolean) => playSound('/sounds/cta-confirm.mp3', 0.50, isMuted, 'cta');

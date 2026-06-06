@@ -13,23 +13,19 @@ interface LeadPopupProps {
 
 export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [hasBeenTriggered, setHasBeenTriggered] = useState(false);
 
   useEffect(() => {
-    // Check if the popup has been shown in the current browser session
-    const isShown = sessionStorage.getItem('suc_lead_popup_shown');
-    if (isShown) return;
+    // If the popup has already been triggered in the current page load lifecycle, do nothing
+    if (hasBeenTriggered) return;
 
     let isTriggered = false;
 
     const triggerPopup = () => {
       if (isTriggered) return;
       isTriggered = true;
+      setHasBeenTriggered(true);
       setIsOpen(true);
-      sessionStorage.setItem('suc_lead_popup_shown', 'true');
-      
-      // Clean up immediately
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
     };
 
     // Trigger 1: 7 seconds delay (fits user requirement of 6-8 seconds)
@@ -61,7 +57,7 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
       clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [hasBeenTriggered]);
 
   // Play subtle sound feedback when the modal opens
   useEffect(() => {
@@ -103,7 +99,7 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
               backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02) 1px, transparent 0)',
               backgroundSize: '8px 8px'
             }}
-            className="bg-charcoal-dark border-t-[3px] border-gold border-x border-b border-white/10 w-full max-w-md relative z-10 flex flex-col p-8 shadow-2xl shadow-black/90 select-none rounded-sm"
+            className="bg-obsidian border-t-[3px] border-gold border-x border-b border-white/10 w-full max-w-md relative z-10 flex flex-col p-8 shadow-2xl shadow-black/90 select-none rounded-sm concrete-texture"
           >
             {/* Close Button */}
             <button
