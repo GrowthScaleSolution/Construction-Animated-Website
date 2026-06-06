@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import Heading from '@/components/ui/Heading';
 
 export const Process = () => {
@@ -28,27 +29,42 @@ export const Process = () => {
   ];
 
   return (
-    <section id="process" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5">
-      {/* CAD line aesthetics */}
-      <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
-        SECTION_05 // WORKFLOW // PROCESS
-      </div>
+    <section id="process" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5">
+      {/* CAD line aesthetics removed */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
         {/* Section Header */}
-        <div className="flex flex-col gap-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-4"
+        >
           <Heading level={2} sectionTag="05 // STRATIFIED WORKFLOW">
             The Construction Process
           </Heading>
           <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
             Every project stage is executed under strict quality checklist parameters to verify structural compliance.
           </p>
-        </div>
+        </motion.div>
 
         {/* Process Timeline Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+          }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-8 relative"
+        >
           {steps.map((step, idx) => (
-            <div key={idx} className="flex flex-col gap-6 relative group select-none">
+            <motion.div key={idx} variants={{
+              hidden: { opacity: 0, x: -20 },
+              visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] } }
+            }} className="flex flex-col gap-6 relative group select-none">
               {/* Horizontal line joining steps on desktop */}
               {idx < 3 && (
                 <div className="hidden md:block absolute top-[18px] left-[50px] w-full h-[1px] bg-white/5 group-hover:bg-gold/20 transition-colors duration-500 z-0" />
@@ -68,9 +84,9 @@ export const Process = () => {
                   {step.desc}
                 </p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -43,7 +43,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
     <section
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen bg-obsidian text-white flex flex-col justify-between overflow-hidden pt-32 pb-12 px-6 md:px-12 select-none"
+      className="relative min-h-screen bg-charcoal-dark text-white flex flex-col justify-between overflow-hidden pt-32 pb-12 px-6 md:px-12 select-none"
     >
       <video
         autoPlay
@@ -53,20 +53,25 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         preload="metadata"
         onPlay={() => setIsVideoLoaded(true)}
         onError={() => setIsVideoError(true)}
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 opacity-15 grayscale ${
-          isVideoLoaded && !isVideoError ? 'opacity-15' : 'opacity-0'
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 ${
+          isVideoLoaded && !isVideoError ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <source src="/construction-hero-video-muted.mp4" type="video/mp4" />
       </video>
 
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-20 construction-grid" />
+      {/* Gradient Overlays for Readability and Vignette */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-obsidian/90 via-obsidian/40 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-obsidian/30 via-transparent to-obsidian/90 pointer-events-none" />
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle, transparent 50%, rgba(0,0,0,0.5) 150%)' }} />
+
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-10 construction-grid" />
       
       {!isTouch && (
         <>
           <div 
-            className="absolute inset-0 z-0 pointer-events-none opacity-30 transition-opacity duration-500"
-            style={{ background: `radial-gradient(circle 350px at ${coords.x}px ${coords.y}px, rgba(255, 200, 10, 0.04), transparent 80%)` }}
+            className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-500 mix-blend-screen"
+            style={{ background: `radial-gradient(circle 600px at ${coords.x}px ${coords.y}px, rgba(255, 200, 10, 0.08), transparent 60%)` }}
           />
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
             <line x1={coords.x} y1="0" x2={coords.x} y2="100%" stroke="rgba(255, 200, 10, 0.12)" strokeWidth="0.5" strokeDasharray="4 4" />
@@ -76,11 +81,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         </>
       )}
 
-      <div className="absolute bottom-28 left-6 md:left-12 font-mono text-[9px] text-white/20 z-10 flex-col gap-0.5 hidden lg:flex">
-        <span>COORDS // X: {coords.x}px</span>
-        <span>COORDS // Y: {coords.y}px</span>
-        <span>SYS_STATUS // ACTIVE</span>
-      </div>
+      {/* Coords overlay removed to reduce visual clutter */}
 
       <motion.div 
         style={!isTouch ? {
@@ -106,7 +107,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
           </div>
 
           <div className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0">
-            <div className="relative bg-charcoal-dark/45 border border-white/10 p-6 md:p-8 backdrop-blur-md w-full max-w-md overflow-hidden group">
+            <div className="relative bg-charcoal-dark/45 border border-white/10 p-6 md:p-8 backdrop-blur-md w-full max-w-md overflow-hidden group hover:bg-charcoal-dark/70 hover:border-gold/30 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-gold/5">
               <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-gold/40" />
               <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-gold/40" />
               <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-gold/40" />
@@ -146,32 +147,32 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
       <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-6 md:pt-8 gap-6 mt-8">
         
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 lg:gap-10 text-xs w-full overflow-x-auto no-scrollbar pb-2 md:pb-0">
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0 group cursor-default">
+            <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0 group-hover:bg-gold/20 group-hover:scale-110 transition-all duration-500">
               <Ruler className="w-3.5 h-3.5 text-gold" />
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-medium">Alignment Tolerance</span>
+              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Alignment Tolerance</span>
               <span className="text-[10px] text-arch-grey font-mono">&lt; 2.0mm Plumb Dev</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0 group cursor-default">
+            <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0 group-hover:bg-gold/20 group-hover:scale-110 transition-all duration-500">
               <ShieldCheck className="w-3.5 h-3.5 text-gold" />
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-medium">Material Baseline</span>
+              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Material Baseline</span>
               <span className="text-[10px] text-arch-grey font-mono">Certified Concrete Mix</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0 group cursor-default">
+            <div className="w-6 h-6 rounded-full border border-gold/30 flex items-center justify-center bg-gold/5 shrink-0 group-hover:bg-gold/20 group-hover:scale-110 transition-all duration-500">
               <Scale className="w-3.5 h-3.5 text-gold" />
             </div>
             <div className="flex flex-col">
-              <span className="text-white font-medium">Rebar Reinforcement</span>
+              <span className="text-white font-medium group-hover:text-gold transition-colors duration-300">Rebar Reinforcement</span>
               <span className="text-[10px] text-arch-grey font-mono">Fe500D Seismic Steel</span>
             </div>
           </div>
@@ -192,10 +193,21 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
 
       </div>
 
-      <a href="#about" className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-1.5 text-[8px] font-mono tracking-[0.25em] text-arch-grey/40 hover:text-gold transition-colors duration-300 hidden lg:flex">
-        <span>SCROLL DOWN</span>
-        <ChevronDown className="w-3.5 h-3.5 animate-bounce text-gold/50" />
-      </a>
+      <motion.a 
+        href="#about" 
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[9px] font-mono tracking-[0.25em] text-arch-grey hover:text-gold transition-colors duration-500 hidden lg:flex group"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1, duration: 1 }}
+      >
+        <span className="uppercase tracking-widest text-white/50 group-hover:text-gold transition-colors">Explore</span>
+        <motion.div 
+          animate={{ y: [0, 8, 0] }} 
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-gold/50 to-transparent group-hover:via-gold transition-all duration-500" />
+        </motion.div>
+      </motion.a>
     </section>
   );
 };

@@ -115,3 +115,12 @@ body {
   color: transparent;
 }
 
+.text-outline-thin-dark {
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.25);
+  color: transparent;
+}
+
+.text-outline-thick-dark {
+  -webkit-text-stroke: 2px rgba(0, 0, 0, 0.05);
+  color: transparent;
+}

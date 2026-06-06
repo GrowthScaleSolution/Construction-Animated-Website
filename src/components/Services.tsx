@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/Card';
 import Heading from '@/components/ui/Heading';
 import Button from '@/components/ui/Button';
@@ -56,15 +57,19 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
   ];
 
   return (
-    <section id="services" className="relative py-24 md:py-36 bg-charcoal-dark/20 border-t border-white/5">
+    <section id="services" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5">
       {/* Structural layout decorations */}
-      <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
-        SECTION_02 // PORTFOLIO // CORE_SERVICES
-      </div>
+      {/* Structural layout decorations removed */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
         {/* Section header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6"
+        >
           <Heading level={2} sectionTag="02 // CIVIL CAPABILITIES">
             Civil Construction Services
           </Heading>
@@ -72,21 +77,37 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
           <Button variant="outline" className="px-5 py-3 text-[10px]" onClick={onOpenModal} isMuted={isMuted} soundType="click">
             Review Technical Specs
           </Button>
-        </div>
+        </motion.div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2 }
+            }
+          }}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+        >
           {services.map((svc) => (
-            <Card key={svc.id} className="flex flex-col h-full justify-between">
+            <motion.div key={svc.id} variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}>
+              <Card className="flex flex-col h-full justify-between bg-white border-black/5 shadow-sm group hover:-translate-y-1 transition-transform duration-500">
               <div className="flex flex-col gap-6">
                 <div className="flex justify-between items-start">
                   <span className="font-mono text-xs text-gold">[ UNIT_{svc.id} ]</span>
-                  <span className="font-mono text-[9px] text-white/20 uppercase">SPEC_CHECK // PASS</span>
+                  <span className="font-mono text-[9px] text-black/30 uppercase">SPEC_CHECK // PASS</span>
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <Heading level={3}>{svc.title}</Heading>
-                  <p className="text-arch-grey text-sm font-light leading-relaxed">
+                  <Heading level={3} className="text-black">{svc.title}</Heading>
+                  <p className="text-zinc-600 text-sm font-light leading-relaxed">
                     {svc.desc}
                   </p>
                 </div>
@@ -94,8 +115,8 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                 {/* Shovel-style bullet lists */}
                 <ul className="flex flex-col gap-3.5 mt-2">
                   {svc.bullets.map((bullet, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-xs text-arch-grey leading-relaxed">
-                      <ShovelIcon className="w-3.5 h-3.5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
+                    <li key={idx} className="flex items-start gap-3 text-xs text-zinc-600 leading-relaxed">
+                      <ShovelIcon className="w-3.5 h-3.5 text-black/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -103,7 +124,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
               </div>
 
               {/* Service specific CTA button */}
-              <div className="mt-8 pt-6 border-t border-white/5">
+              <div className="mt-8 pt-6 border-t border-black/5">
                 <a
                   href={getWhatsAppLink(svc.msg)}
                   target="_blank"
@@ -115,9 +136,10 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                   </Button>
                 </a>
               </div>
-            </Card>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

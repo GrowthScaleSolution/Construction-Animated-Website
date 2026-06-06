@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import Heading from '@/components/ui/Heading';
 import Card from '@/components/ui/Card';
 import { Layers, MapPin } from 'lucide-react';
@@ -34,53 +35,71 @@ export const Showcase = () => {
   ];
 
   return (
-    <section id="showcase" className="relative py-24 md:py-36 bg-charcoal-dark/20 border-t border-white/5">
+    <section id="showcase" className="relative py-24 md:py-36 bg-stone-50 border-t border-black/5">
       {/* Decorative details */}
-      <div className="absolute top-10 left-10 text-[9px] font-mono text-white/5 uppercase select-none">
-        SECTION_06 // PROJECTS // SHOWCASE
-      </div>
+      {/* Decorative details removed */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
         {/* Section Header */}
-        <div className="flex flex-col gap-4">
-          <Heading level={2} sectionTag="06 // CIVIL PORTFOLIO">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-4"
+        >
+          <Heading level={2} sectionTag="06 // CIVIL PORTFOLIO" className="text-black">
             Active Building Showcases
           </Heading>
-          <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
+          <p className="text-zinc-600 text-sm max-w-2xl font-light leading-relaxed">
             A listing of active civil construction and concrete framing scopes managed under our strict engineering parameters.
           </p>
-        </div>
+        </motion.div>
 
         {/* Project Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+          }}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+        >
           {projects.map((proj) => (
-            <Card key={proj.id} hoverEffect={true} className="flex flex-col h-full justify-between">
+            <motion.div key={proj.id} variants={{
+              hidden: { opacity: 0, scale: 0.95 },
+              visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}>
+              <Card hoverEffect={true} className="flex flex-col h-full justify-between bg-white border-black/5 shadow-sm">
               <div className="flex flex-col gap-5">
-                <div className="flex justify-between items-start font-mono text-[9px] text-white/20 uppercase">
+                <div className="flex justify-between items-start font-mono text-[9px] text-black/30 uppercase">
                   <span>PROJECT // {proj.id}</span>
-                  <span className="text-white/40 group-hover:text-gold/90 transition-colors duration-500 font-semibold">{proj.status}</span>
+                  <span className="text-black/40 group-hover:text-gold transition-colors duration-500 font-semibold">{proj.status}</span>
                 </div>
                 
                 <div className="flex flex-col gap-1">
                   <span className="text-[10px] font-mono text-gold/80 uppercase tracking-wider">{proj.type}</span>
-                  <Heading level={3} className="text-lg md:text-xl font-semibold mt-1">
+                  <Heading level={3} className="text-lg md:text-xl font-semibold mt-1 text-black">
                     {proj.title}
                   </Heading>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-arch-grey mt-2">
-                  <MapPin className="w-3.5 h-3.5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-zinc-600 mt-2">
+                  <MapPin className="w-3.5 h-3.5 text-black/30 group-hover:text-gold transition-colors duration-500 shrink-0" />
                   <span>{proj.location}</span>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-arch-grey border-t border-white/5 pt-4 mt-2">
-                  <Layers className="w-3.5 h-3.5 text-white/30 shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-zinc-600 border-t border-black/5 pt-4 mt-2">
+                  <Layers className="w-3.5 h-3.5 text-black/30 shrink-0" />
                   <span className="font-mono text-[10px]">{proj.specs}</span>
                 </div>
               </div>
-            </Card>
+              </Card>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

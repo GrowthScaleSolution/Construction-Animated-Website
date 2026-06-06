@@ -90,30 +90,14 @@ export default function Home() {
       </div>
 
       <main className="flex-grow flex flex-col">
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <Hero isMuted={isMuted} />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <About />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <Services onOpenModal={() => setIsCivilModalOpen(true)} isMuted={isMuted} />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <InteractiveBlueprint isMuted={isMuted} />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <WhyChooseUs />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <Process />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <Showcase />
-        </div>
-        <div onMouseEnter={() => playWhooshSound(isMuted)} className="w-full">
-          <ContactSection isMuted={isMuted} />
-        </div>
+        <Hero isMuted={isMuted} />
+        <About />
+        <Services onOpenModal={() => setIsCivilModalOpen(true)} isMuted={isMuted} />
+        <InteractiveBlueprint isMuted={isMuted} />
+        <WhyChooseUs />
+        <Process />
+        <Showcase />
+        <ContactSection isMuted={isMuted} />
       </main>
 
       <Footer />

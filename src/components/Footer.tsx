@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import Logo from '@/components/ui/Logo';
 
 export const Footer = () => {
@@ -8,7 +9,13 @@ export const Footer = () => {
     <footer className="bg-obsidian border-t border-white/5 py-12 md:py-16 select-none">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12">
         {/* Main top footer layout */}
-        <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col md:flex-row justify-between items-start gap-8"
+        >
           <div className="flex flex-col gap-4">
             <Logo />
             <p className="text-xs text-arch-grey/70 max-w-xs leading-relaxed mt-2">
@@ -28,19 +35,23 @@ export const Footer = () => {
               <a href="#contact" className="hover:text-gold transition-colors duration-300">06 // Coordinate Mapping</a>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom copyright & disclaimer */}
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-white/20">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-white/20"
+        >
           <div className="flex flex-col md:flex-row gap-2 md:gap-6 items-center">
             <span>SHREE UNIYA CONSTRUCTION © 2026 // ALL RIGHTS RESERVED</span>
-            <span className="hidden md:inline text-white/5">|</span>
-            <span>CAD_ID: SUC_DS_V1_2026</span>
           </div>
           <div className="text-center md:text-right text-[9px] text-gold/30">
             DISCLAIMER // PRE-LAUNCH CONCEPTUAL HOMEPAGE DEMO
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );

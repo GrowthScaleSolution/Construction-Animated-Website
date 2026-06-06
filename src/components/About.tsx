@@ -6,19 +6,16 @@ import Heading from '@/components/ui/Heading';
 
 export const About = () => {
   return (
-    <section id="about" className="relative py-28 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden select-none">
+    <section id="about" className="relative py-28 md:py-36 bg-stone-50 border-t border-black/5 overflow-hidden select-none">
       
       {/* 1. Gigantic Brutalist Outline Background Typography (BUILD reference style) */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 pointer-events-none select-none z-0 hidden lg:block opacity-10">
-        <span className="text-[25vw] font-black font-display leading-none text-outline-thick uppercase tracking-tighter">
+        <span className="text-[25vw] font-black font-display leading-none text-outline-thick-dark uppercase tracking-tighter">
           CORE
         </span>
       </div>
 
-      {/* Drafting metadata */}
-      <div className="absolute top-10 left-10 text-[9px] font-mono text-white/20 uppercase">
-        SECTION_01 // CIVIL_CORE // EXECUTION
-      </div>
+      {/* Drafting metadata removed for cleaner look */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 relative z-10">
         
@@ -37,7 +34,7 @@ export const About = () => {
             
             <Heading level={2} className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-[1.05] uppercase">
               Build <br />
-              <span className="text-outline-thin">with</span> <br />
+              <span className="text-outline-thin-dark">with</span> <br />
               Integrity.
             </Heading>
             
@@ -52,9 +49,9 @@ export const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-6 text-arch-grey text-sm md:text-base leading-relaxed font-light max-w-xl"
+            className="flex flex-col gap-6 text-zinc-600 text-sm md:text-base leading-relaxed font-light max-w-xl"
           >
-            <p className="text-white font-medium text-lg tracking-wide leading-snug">
+            <p className="text-black font-medium text-lg tracking-wide leading-snug">
               At the core of every structural development is a strict commitment to quality, safety, and long-term value.
             </p>
             
@@ -73,24 +70,24 @@ export const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-white/10 pt-8 mt-4 max-w-xl"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-black/10 pt-8 mt-4 max-w-xl"
           >
             <div className="flex flex-col gap-1.5">
               <span className="font-mono text-[9px] uppercase tracking-[0.2em]">
-                <span className="text-gold/50">[</span> <span className="text-white/80">RCC STABILITY</span> <span className="text-gold/50">]</span>
+                <span className="text-gold/80">[</span> <span className="text-black/80">RCC STABILITY</span> <span className="text-gold/80">]</span>
               </span>
-              <span className="text-white font-bold text-lg">M25 to M40 baselines</span>
-              <p className="text-xs text-arch-grey/75 leading-relaxed font-light">
+              <span className="text-black font-bold text-lg">M25 to M40 baselines</span>
+              <p className="text-xs text-zinc-600 leading-relaxed font-light">
                 High-strength engineered concrete design mixes configured for seismic safety.
               </p>
             </div>
             
             <div className="flex flex-col gap-1.5">
               <span className="font-mono text-[9px] uppercase tracking-[0.2em]">
-                <span className="text-gold/50">[</span> <span className="text-white/80">PLUMB DEVIATION</span> <span className="text-gold/50">]</span>
+                <span className="text-gold/80">[</span> <span className="text-black/80">PLUMB DEVIATION</span> <span className="text-gold/80">]</span>
               </span>
-              <span className="text-white font-bold text-lg">&lt; 2.0mm tolerances</span>
-              <p className="text-xs text-arch-grey/75 leading-relaxed font-light">
+              <span className="text-black font-bold text-lg">&lt; 2.0mm tolerances</span>
+              <p className="text-xs text-zinc-600 leading-relaxed font-light">
                 Laser vertical alignment controls checked at every core column cast.
               </p>
             </div>

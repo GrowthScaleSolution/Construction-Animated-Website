@@ -55,23 +55,33 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
   const currentLayer = layers.find((l) => l.id === activeLayer)!;
 
   return (
-    <section id="blueprints" className="relative py-24 md:py-36 bg-obsidian border-t border-white/5 overflow-hidden">
-      <div className="absolute top-10 left-6 md:left-10 text-[9px] font-mono text-white/5 uppercase select-none">
-        SECTION_03 // CAD_ENGINE // BLUEPRINTS
-      </div>
+    <section id="blueprints" className="relative py-24 md:py-36 bg-charcoal-dark border-t border-white/5 overflow-hidden">
+      {/* Drafting metadata removed for cleaner look */}
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-12 md:gap-16">
-        <div className="flex flex-col gap-4">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col gap-4"
+        >
           <Heading level={2} sectionTag="03 // ARCHITECTURAL SCHEMATICS">
             Interactive Blueprint Viewer
           </Heading>
           <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
             Verify structural building layers by selecting the corresponding systems below. The visual schematics update to reflect engineered layouts.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          <div className="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex flex-col gap-8 order-2 lg:order-1"
+          >
             <div className="flex flex-col gap-3 font-mono text-xs">
               {layers.map((layer) => (
                 <button
@@ -124,14 +134,17 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
                 </motion.div>
               </AnimatePresence>
             </Card>
-          </div>
+          </motion.div>
 
-          <div className="lg:col-span-7 flex justify-center items-center order-1 lg:order-2">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-7 flex justify-center items-center order-1 lg:order-2"
+          >
             <div className="relative w-full max-w-[500px] aspect-square bg-charcoal-dark border border-white/10 blueprint-grid p-4 sm:p-8 flex items-center justify-center">
-              <div className="absolute top-4 left-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
-              <div className="absolute top-4 right-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
-              <div className="absolute bottom-4 left-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
-              <div className="absolute bottom-4 right-4 w-4 h-4 text-white/20 select-none font-mono text-[9px]">+</div>
+              {/* Corner markers removed */}
 
               <svg className="w-full h-full text-white/25" viewBox="0 0 200 200" fill="none">
                 <line x1="20" y1="40" x2="180" y2="40" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="0.5" strokeDasharray="3 3" />
@@ -191,7 +204,7 @@ export const InteractiveBlueprint: React.FC<InteractiveBlueprintProps> = ({ isMu
                 </motion.g>
               </svg>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
