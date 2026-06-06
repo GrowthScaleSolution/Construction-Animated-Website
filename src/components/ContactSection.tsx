@@ -28,7 +28,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
           className="flex flex-col gap-4"
         >
           <Heading level={2} sectionTag="Contact Information">
-            Project Coordinates & Contact
+            Project Location & Contact
           </Heading>
           <p className="text-arch-grey text-sm max-w-2xl font-light leading-relaxed">
             Contact our engineering team to inquire about civil construction scopes, foundation pours, or blockwork packages.
@@ -100,14 +100,20 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
             className="lg:col-span-7 flex flex-col gap-6"
           >
             {/* Site Visit Image Card */}
-            <div className="bg-charcoal-dark border border-white/10 relative flex items-end justify-start h-[250px] lg:h-[300px] rounded-sm overflow-hidden group">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-charcoal-dark border border-white/10 relative flex items-end justify-start h-[250px] lg:h-[300px] rounded-sm overflow-hidden group"
+            >
               <Image 
                 src="/images/contact-site-visit.jpeg"
                 alt="Request a Site Visit"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-1000"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/90 via-charcoal-dark/40 to-transparent group-hover:from-charcoal-dark/80 transition-colors duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/15 to-transparent group-hover:from-black/55 transition-colors duration-500" />
               
               <div className="relative z-10 p-6 md:p-8 flex flex-col gap-2 w-full">
                 <span className="font-mono text-[10px] text-gold uppercase tracking-[0.2em]">In-Person Tour</span>
@@ -126,10 +132,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
                   </Button>
                 </a>
               </div>
-            </div>
+            </motion.div>
 
             {/* Embedded Google Map */}
-            <div className="bg-charcoal-dark border border-white/10 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group">
+            <div className="bg-charcoal-dark border border-white/15 shadow-2xl shadow-black/80 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group hover:border-gold/30 transition-all duration-500">
               <iframe 
                  src="https://maps.google.com/maps?q=Nallasopara,+Mumbai&t=m&z=13&output=embed&iwloc=near"
                  width="100%" 
@@ -137,10 +143,22 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
                  style={{ border: 0 }} 
                  loading="lazy" 
                  title="Nallasopara, Mumbai Map"
-                 className="absolute inset-0 grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 pointer-events-auto"
+                 className="absolute inset-0 w-full h-full pointer-events-auto"
                />
-               {/* Map Overlay to prevent scroll trapping unless hovered/clicked */}
-               <div className="absolute inset-0 pointer-events-none border border-white/5 shadow-inner" />
+               
+               {/* Clickable Overlay Action */}
+               <div className="absolute bottom-4 right-4 z-10">
+                 <a 
+                   href="https://maps.google.com/?q=Nallasopara,+Mumbai"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="flex items-center gap-2 bg-charcoal-dark/95 hover:bg-gold hover:text-obsidian text-white border border-white/10 text-[9px] font-mono tracking-wider uppercase px-4 py-2 transition-all duration-300 rounded-sm shadow-md cursor-pointer"
+                 >
+                   Open in Google Maps →
+                 </a>
+               </div>
+
+               <div className="absolute inset-0 pointer-events-none border border-white/10" />
             </div>
           </motion.div>
         </div>

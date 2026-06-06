@@ -7,55 +7,89 @@ import { ChevronUp } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { getWhatsAppLink } from '@/lib/whatsapp';
 
-export const Footer = () => {
+interface FooterProps {
+  isMuted?: boolean;
+}
+
+export const Footer: React.FC<FooterProps> = ({ isMuted = true }) => {
   return (
     <footer className="bg-charcoal-dark border-t border-white/5 py-16 md:py-20 select-none">
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col gap-16">
         {/* Main top footer layout */}
         <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-10px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.1 }
+            }
+          }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8"
         >
-          <div className="flex flex-col gap-6 lg:col-span-1">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="flex flex-col gap-6 lg:col-span-1"
+          >
             <Logo />
             <p className="text-xs text-arch-grey leading-relaxed max-w-xs font-light">
               Premium structural execution, concrete framing, and foundation engineering in Mumbai's western nodes.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col gap-5">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="flex flex-col gap-5"
+          >
             <span className="font-display font-semibold text-white text-sm tracking-wide">Quick Links</span>
             <div className="flex flex-col gap-3 text-sm text-arch-grey font-light">
               <a href="#about" className="hover:text-gold transition-colors duration-300 w-max">Brand Philosophy</a>
               <a href="#blueprints" className="hover:text-gold transition-colors duration-300 w-max">Interactive Blueprints</a>
               <a href="#showcase" className="hover:text-gold transition-colors duration-300 w-max">Active Portfolio</a>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col gap-5">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="flex flex-col gap-5"
+          >
             <span className="font-display font-semibold text-white text-sm tracking-wide">Civil Services</span>
             <div className="flex flex-col gap-3 text-sm text-arch-grey font-light">
               <a href="#services" className="hover:text-gold transition-colors duration-300 w-max">Structural RCC Framing</a>
               <a href="#services" className="hover:text-gold transition-colors duration-300 w-max">Foundation Prep</a>
               <a href="#services" className="hover:text-gold transition-colors duration-300 w-max">Structural Masonry</a>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col gap-5">
+          <motion.div 
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="flex flex-col gap-5"
+          >
             <span className="font-display font-semibold text-white text-sm tracking-wide">Connect</span>
             <div className="flex flex-col gap-3 text-sm text-arch-grey font-light">
               <span className="text-white">Nallasopara, Mumbai</span>
               <a href={getWhatsAppLink('Hello')} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors duration-300 w-max">+91 97658 02900</a>
             </div>
             <a href={getWhatsAppLink('Hello, I would like to request a site visit.')} target="_blank" rel="noopener noreferrer" className="mt-2 w-max">
-              <Button variant="outline" className="px-6 py-2.5 text-xs" isMuted={true} soundType="click">
+              <Button variant="outline" className="px-6 py-2.5 text-xs" isMuted={isMuted} soundType="click">
                 Request Site Visit
               </Button>
             </a>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Bottom copyright & back to top */}

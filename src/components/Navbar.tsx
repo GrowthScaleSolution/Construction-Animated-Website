@@ -96,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Button variant="outline" className="px-5 py-2.5 text-[10px]">
+            <Button variant="outline" className="px-5 py-2.5 text-[10px]" isMuted={isMuted} soundType="click">
               Get Estimate
             </Button>
           </a>
@@ -146,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="mt-2"
             >
-              <Button variant="accent" className="w-full">
+              <Button variant="accent" className="w-full" isMuted={isMuted} soundType="cta">
                 Get Estimate (WhatsApp)
               </Button>
             </a>

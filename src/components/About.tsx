@@ -7,7 +7,7 @@ import Heading from '@/components/ui/Heading';
 
 export const About = () => {
   return (
-    <section id="about" className="relative py-28 md:py-36 bg-[#EBEBEB] border-t border-black/10 overflow-hidden select-none">
+    <section id="about" className="relative py-28 md:py-36 bg-concrete-light border-t border-black/10 overflow-hidden select-none">
       
       {/* 1. Gigantic Brutalist Outline Background Typography (BUILD reference style) */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 pointer-events-none select-none z-0 hidden lg:block opacity-10">
@@ -65,7 +65,7 @@ export const About = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-6 text-zinc-600 text-sm md:text-base leading-relaxed font-light max-w-xl"
+            className="flex flex-col gap-6 text-zinc-800 text-sm md:text-base leading-relaxed font-light max-w-xl"
           >
             <p className="text-charcoal-dark font-medium text-lg tracking-wide leading-snug">
               At the core of every structural development is a strict commitment to quality, safety, and long-term value.
@@ -88,22 +88,22 @@ export const About = () => {
             transition={{ duration: 0.6, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-1 sm:grid-cols-2 gap-8 border-t border-black/10 pt-8 mt-4 max-w-xl"
           >
-            <div className="flex flex-col gap-1.5">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold/80">
+            <div className="flex flex-col gap-1.5 border-l-2 border-gold pl-3">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-charcoal-dark/60 font-semibold">
                 RCC Stability
               </span>
               <span className="text-charcoal-dark font-bold text-lg">M25 to M40 baselines</span>
-              <p className="text-xs text-zinc-600 leading-relaxed font-light">
+              <p className="text-xs text-zinc-700 leading-relaxed font-light">
                 High-strength engineered concrete design mixes configured for seismic safety.
               </p>
             </div>
             
-            <div className="flex flex-col gap-1.5">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold/80">
+            <div className="flex flex-col gap-1.5 border-l-2 border-gold pl-3">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-charcoal-dark/60 font-semibold">
                 Plumb Deviation
               </span>
               <span className="text-charcoal-dark font-bold text-lg">&lt; 2.0mm tolerances</span>
-              <p className="text-xs text-zinc-600 leading-relaxed font-light">
+              <p className="text-xs text-zinc-700 leading-relaxed font-light">
                 Laser vertical alignment controls checked at every core column cast.
               </p>
             </div>

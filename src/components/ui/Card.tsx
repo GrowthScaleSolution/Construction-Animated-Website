@@ -18,7 +18,7 @@ export const Card: React.FC<CardProps> = ({
     <div
       className={cn(
         "relative bg-charcoal-dark/70 border border-white/5 p-6 md:p-8 backdrop-blur-md transition-all duration-500 overflow-hidden group select-none",
-        hoverEffect && "hover:border-gold/30 hover:bg-charcoal-dark/90",
+        hoverEffect && "hover:border-gold/30 hover:bg-charcoal-dark/90 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/55",
         className
       )}
       {...props}

@@ -2,11 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, ArrowRight, Compass } from 'lucide-react';
-import Heading from '@/components/ui/Heading';
+import { X, MessageSquare } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { getWhatsAppLink } from '@/lib/whatsapp';
-import ShovelIcon from '@/components/ui/ShovelIcon';
 import { playPopupOpenSound, playCTAConfirmSound } from '@/lib/sound';
 
 interface LeadPopupProps {
@@ -19,18 +17,53 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
   useEffect(() => {
     // Check if the popup has been shown in the current browser session
     const isShown = sessionStorage.getItem('suc_lead_popup_shown');
-    
-    if (!isShown) {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-        sessionStorage.setItem('suc_lead_popup_shown', 'true');
-      }, 5000); // 5 second delay
+    if (isShown) return;
 
-      return () => clearTimeout(timer);
-    }
+    let isTriggered = false;
+
+    const triggerPopup = () => {
+      if (isTriggered) return;
+      isTriggered = true;
+      setIsOpen(true);
+      sessionStorage.setItem('suc_lead_popup_shown', 'true');
+      
+      // Clean up immediately
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
+
+    // Trigger 1: 7 seconds delay (fits user requirement of 6-8 seconds)
+    const timer = setTimeout(() => {
+      triggerPopup();
+    }, 7000);
+
+    // Trigger 2: Scroll past second section (1.5 to 2 sections down)
+    const handleScroll = () => {
+      // Services section starts after Hero (100vh) and About (~700px)
+      const servicesSection = document.getElementById('services');
+      if (servicesSection) {
+        const rect = servicesSection.getBoundingClientRect();
+        // Trigger if the top of Services enters the viewport
+        if (rect.top <= window.innerHeight) {
+          triggerPopup();
+        }
+      } else {
+        // Fallback calculation using window scroll offset
+        if (window.scrollY > window.innerHeight * 1.3) {
+          triggerPopup();
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  // Play sound when the modal opens
+  // Play subtle sound feedback when the modal opens
   useEffect(() => {
     if (isOpen) {
       playPopupOpenSound(isMuted);
@@ -57,89 +90,69 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute inset-0 bg-obsidian/90 backdrop-blur-md cursor-pointer"
+            className="absolute inset-0 bg-obsidian/80 backdrop-blur-md cursor-pointer"
           />
 
           {/* Modal Box */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 30 }}
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 30 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-charcoal-dark border border-white/10 w-full max-w-lg relative z-10 flex flex-col p-6 md:p-8 overflow-hidden"
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.02) 1px, transparent 0)',
+              backgroundSize: '8px 8px'
+            }}
+            className="bg-charcoal-dark border-t-[3px] border-gold border-x border-b border-white/10 w-full max-w-md relative z-10 flex flex-col p-8 shadow-2xl shadow-black/90 select-none rounded-sm"
           >
-            {/* Custom blueprint styling grids */}
-            <div className="absolute inset-0 blueprint-grid pointer-events-none opacity-10" />
-
-            {/* Corner structural markings */}
-            <div className="absolute top-0 left-0 w-3.5 h-3.5 border-t border-l border-gold" />
-            <div className="absolute top-0 right-0 w-3.5 h-3.5 border-t border-r border-gold" />
-            <div className="absolute bottom-0 left-0 w-3.5 h-3.5 border-b border-l border-gold" />
-            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 border-b border-r border-gold" />
-
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 text-arch-grey hover:text-gold transition-colors duration-300 p-1.5 cursor-pointer z-20"
-              title="Close invitation"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white hover:scale-105 transition-all duration-200 p-1.5 cursor-pointer z-20"
+              title="Close"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4.5 h-4.5" />
             </button>
 
             {/* Content Container */}
-            <div className="relative z-10 flex flex-col gap-6 select-none">
-              {/* Drafting references */}
-              <div className="flex justify-between items-center font-mono text-[9px] text-white/25">
-                <span>ESTIMATE_DESK // INVITATION</span>
-                <span>SEC_ID: SUC_EST_INV_1</span>
-              </div>
-
-              {/* Icon / Brand mark */}
-              <div className="w-12 h-12 border border-gold/40 rotate-45 flex items-center justify-center bg-obsidian/60 mt-2">
-                <Calendar className="w-5 h-5 text-gold -rotate-45" />
+            <div className="relative z-10 flex flex-col items-center text-center mt-4">
+              
+              {/* Construction Visual Cue */}
+              <div className="w-12 h-12 border border-gold/30 rounded-full flex items-center justify-center bg-gold/5 mb-5">
+                <MessageSquare className="w-5 h-5 text-gold" />
               </div>
 
               {/* Headline */}
-              <div className="flex flex-col gap-2 mt-2">
-                <Heading level={3} sectionTag="CIVIL ESTIMATE INQUIRY">
-                  Schedule Structural Consultation
-                </Heading>
-                <p className="text-xs text-arch-grey leading-relaxed mt-1 font-light">
-                  Request a structural review, load calculation inquiry, or concrete pour cost estimation with our Nallasopara-based engineering team.
-                </p>
-              </div>
-
-              {/* Technical features overview */}
-              <div className="border-y border-white/5 py-4 flex flex-col gap-3 font-mono text-[10px] text-arch-grey">
-                <div className="flex items-start gap-2.5">
-                  <ShovelIcon className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
-                  <span>GPS location mapping and site dimensions checks.</span>
-                </div>
-                <div className="flex items-start gap-2.5">
-                  <ShovelIcon className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
-                  <span>Concrete grade mixture planning (M25 / M30).</span>
-                </div>
-              </div>
+              <h3 className="font-display font-bold text-white text-xl md:text-2xl uppercase tracking-wide mb-3">
+                Plan Your Civil Construction Project
+              </h3>
+              
+              {/* Short Copy */}
+              <p className="text-zinc-300 text-xs md:text-sm leading-relaxed font-light mb-8 max-w-sm">
+                Get a quick consultation for structural work, foundation planning, RCC work, renovation, or site execution in Nallasopara and nearby areas.
+              </p>
 
               {/* Actions */}
-              <div className="flex flex-col sm:flex-row gap-3 mt-2 w-full">
+              <div className="flex flex-col gap-3 w-full">
                 <a
                   href={getWhatsAppLink(leadMessage)}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handleCTAClick}
-                  className="w-full sm:w-grow"
+                  className="w-full block"
                 >
-                  <Button variant="accent" className="w-full text-[10px] py-3 flex items-center justify-center gap-2">
-                    Request Consultation <ArrowRight className="w-3.5 h-3.5" />
+                  <Button variant="accent" className="w-full text-xs py-3.5 flex items-center justify-center gap-2" isMuted={isMuted} soundType="cta">
+                    Request Consultation on WhatsApp
                   </Button>
                 </a>
                 <Button
                   variant="secondary"
-                  className="w-full sm:w-auto text-[10px] py-3 border-white/15"
+                  className="w-full text-xs py-3.5 border-white/10"
                   onClick={handleClose}
+                  isMuted={isMuted}
+                  soundType="click"
                 >
-                  View Website
+                  Continue Exploring
                 </Button>
               </div>
             </div>
@@ -149,4 +162,5 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
     </AnimatePresence>
   );
 };
+
 export default LeadPopup;

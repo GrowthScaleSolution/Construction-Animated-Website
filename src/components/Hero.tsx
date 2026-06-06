@@ -69,9 +69,9 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
       </motion.div>
 
       {/* Gradient Overlays for Readability and Vignette */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-charcoal-dark/90 via-charcoal-dark/40 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 z-0 bg-gradient-to-t from-charcoal-dark/80 via-transparent to-charcoal-dark/30 pointer-events-none" />
-      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.5) 120%)' }} />
+      <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/55 via-black/20 to-transparent pointer-events-none" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 pointer-events-none" />
+      <div className="absolute inset-0 z-0 pointer-events-none" style={{ background: 'radial-gradient(circle at center, transparent 65%, rgba(0,0,0,0.3) 100%)' }} />
       
       {!isTouch && (
         <div 
@@ -99,14 +99,18 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
             <Heading level={1} className="text-white leading-[1.05] tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl">
               Engineering <br />the Inevitable.
             </Heading>
-
+ 
             <p className="text-arch-grey text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-1 md:mt-2">
               Premium structural execution, concrete framing, and foundation engineering. Operating under strict, code-compliant parameters in Nallasopara, Mumbai.
             </p>
           </div>
 
           <div className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0">
-            <div className="relative bg-black/30 border border-white/10 p-6 md:p-8 backdrop-blur-md w-full max-w-md overflow-hidden group hover:bg-black/50 hover:border-gold/30 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-black/50">
+            <motion.div 
+              style={!isTouch ? { x: rotateDeg.rY * 1.5, y: -rotateDeg.rX * 1.5 } : undefined}
+              whileHover={{ scale: 1.02 }}
+              className="relative bg-charcoal-dark/25 border border-white/10 p-6 md:p-8 backdrop-blur-lg w-full max-w-md overflow-hidden group hover:bg-charcoal-dark/40 hover:border-gold/30 transition-all duration-500 hover:shadow-2xl hover:shadow-black/40"
+            >
               <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
               <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-gold/40 transition-all duration-300 group-hover:border-gold group-hover:w-3 group-hover:h-3" />
@@ -137,7 +141,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
           
         </div>
@@ -194,18 +198,19 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
 
       <motion.a 
         href="#about" 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[9px] font-mono tracking-[0.25em] text-arch-grey hover:text-gold transition-colors duration-500 hidden lg:flex group"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3 text-[9px] font-mono tracking-[0.25em] text-arch-grey hover:text-gold transition-colors duration-500 hidden lg:flex group"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 1 }}
       >
         <span className="uppercase tracking-widest text-white/50 group-hover:text-gold transition-colors">Explore</span>
-        <motion.div 
-          animate={{ y: [0, 8, 0] }} 
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-gold/50 to-transparent group-hover:via-gold transition-all duration-500" />
-        </motion.div>
+        <div className="w-5 h-8 border border-white/20 rounded-full flex justify-center p-1 group-hover:border-gold/50 transition-colors duration-300">
+          <motion.div
+            animate={{ y: [0, 6, 0], opacity: [1, 0, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            className="w-1 h-1.5 bg-gold rounded-full"
+          />
+        </div>
       </motion.a>
     </section>
   );

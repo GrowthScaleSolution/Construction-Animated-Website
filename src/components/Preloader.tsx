@@ -82,7 +82,6 @@ export const Preloader = ({ isMuted }: { isMuted: boolean }) => {
                 {/* Central static axis marker */}
                 <circle cx="50" cy="50" r="3" fill="#FFC80A" />
               </svg>
-              <div className="absolute text-[8px] text-white/45 font-mono tracking-wider font-medium mt-1">CAD_SYS</div>
             </div>
 
             {/* Loading Bar */}

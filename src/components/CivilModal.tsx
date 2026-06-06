@@ -163,7 +163,7 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
                   onClick={handleCTAClick}
                   className="w-full sm:w-auto"
                 >
-                  <Button variant="accent" className="w-full text-[10px] py-2.5 px-4">
+                  <Button variant="accent" className="w-full text-[10px] py-2.5 px-4" isMuted={isMuted} soundType="cta">
                     Request Site Visit
                   </Button>
                 </a>
@@ -174,12 +174,12 @@ export const CivilModal: React.FC<CivilModalProps> = ({ isOpen, onClose, isMuted
                   onClick={handleCTAClick}
                   className="w-full sm:w-auto"
                 >
-                  <Button variant="secondary" className="w-full text-[10px] py-2.5 px-4 border-white/15">
+                  <Button variant="secondary" className="w-full text-[10px] py-2.5 px-4 border-white/15" isMuted={isMuted} soundType="click">
                     Datasheet Inquiry
                   </Button>
                 </a>
               </div>
-              <Button variant="outline" className="w-full sm:w-auto py-2.5 px-5 text-[10px]" onClick={onClose}>
+              <Button variant="outline" className="w-full sm:w-auto py-2.5 px-5 text-[10px]" onClick={onClose} isMuted={isMuted} soundType="click">
                 Acknowledge & Close
               </Button>
             </div>

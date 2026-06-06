@@ -84,9 +84,6 @@ export default function Home() {
 
       <div className="scroll-meter-track hidden md:block z-40">
         <div className="scroll-meter-fill transition-all duration-150" style={{ height: `${scrollDepth}%` }} />
-        <div className="absolute top-full mt-2 left-0 -translate-x-1/2 font-mono text-[8px] text-white/20 uppercase whitespace-nowrap">
-          Elev: {(scrollDepth * 0.45).toFixed(1)}m
-        </div>
       </div>
 
       <main className="flex-grow flex flex-col">
@@ -100,7 +97,7 @@ export default function Home() {
         <ContactSection isMuted={isMuted} />
       </main>
 
-      <Footer />
+      <Footer isMuted={isMuted} />
 
       <CivilModal isOpen={isCivilModalOpen} onClose={() => setIsCivilModalOpen(false)} isMuted={isMuted} />
       <WhatsAppCTA isMuted={isMuted} />

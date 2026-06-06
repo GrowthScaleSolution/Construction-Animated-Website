@@ -102,23 +102,29 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
             }}>
-              <Card className="flex flex-col h-full justify-between bg-[#F5F5F5] border-black/10 shadow-sm group hover:-translate-y-1 transition-transform duration-500 !p-0">
-                <div className="relative w-full h-48 md:h-56 overflow-hidden">
+              <Card className="flex flex-col h-full justify-between bg-concrete-dark border-white/5 shadow-md group hover:-translate-y-1 transition-transform duration-500 !p-0">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  className="relative w-full h-48 md:h-56 overflow-hidden"
+                >
                   <Image 
                     src={svc.image} 
                     alt={svc.title} 
                     fill 
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                </div>
+                </motion.div>
                 
                 <div className="flex flex-col flex-grow p-6 md:p-8">
                   <div className="flex flex-col gap-6">
 
 
                     <div className="flex flex-col gap-3">
-                      <Heading level={3} className="text-black">{svc.title}</Heading>
-                      <p className="text-zinc-600 text-sm font-light leading-relaxed">
+                      <Heading level={3} className="text-white group-hover:text-gold transition-colors duration-300">{svc.title}</Heading>
+                      <p className="text-zinc-300 text-sm font-light leading-relaxed">
                         {svc.desc}
                       </p>
                     </div>
@@ -126,8 +132,8 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                     {/* Shovel-style bullet lists */}
                     <ul className="flex flex-col gap-3.5 mt-2">
                       {svc.bullets.map((bullet, idx) => (
-                        <li key={idx} className="flex items-start gap-3 text-xs text-zinc-600 leading-relaxed">
-                          <ShovelIcon className="w-3.5 h-3.5 text-black/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
+                        <li key={idx} className="flex items-start gap-3 text-xs text-zinc-300 leading-relaxed">
+                          <ShovelIcon className="w-3.5 h-3.5 text-white/30 group-hover:text-gold transition-colors duration-500 shrink-0 mt-0.5" />
                           <span>{bullet}</span>
                         </li>
                       ))}
@@ -135,7 +141,7 @@ export const Services: React.FC<ServicesProps> = ({ onOpenModal, isMuted = true 
                   </div>
 
                   {/* Service specific CTA button */}
-                  <div className="mt-8 pt-6 border-t border-black/5 mt-auto">
+                  <div className="mt-8 pt-6 border-t border-white/5 mt-auto">
                     <a
                       href={getWhatsAppLink(svc.msg)}
                       target="_blank"
