@@ -185,20 +185,41 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8 lg:gap-12 items-center">
           
           <div className="lg:col-span-7 flex flex-col items-start gap-3.5 md:gap-5 text-left">
-            <span className="text-[8.5px] xs:text-[10px] md:text-xs font-semibold tracking-[0.2em] text-gold uppercase">
+            <motion.span 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-[8.5px] xs:text-[10px] md:text-xs font-semibold tracking-[0.2em] text-gold uppercase"
+            >
               Civil & Building Construction
-            </span>
+            </motion.span>
             
-            <Heading level={1} className="text-white leading-[1.05] tracking-tight">
-              Engineering <br />the Inevitable.
-            </Heading>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <Heading level={1} className="text-white leading-[1.05] tracking-tight">
+                Engineering <br />the Inevitable.
+              </Heading>
+            </motion.div>
  
-            <p className="text-zinc-200 text-xs sm:text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-0.5 md:mt-2">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="text-zinc-200 text-xs sm:text-sm md:text-base tracking-wide max-w-lg font-light leading-relaxed mt-0.5 md:mt-2"
+            >
               Premium structural execution, concrete framing, and foundation engineering.<span className="hidden sm:inline"> Operating under strict, code-compliant parameters in Nallasopara, Mumbai.</span>
-            </p>
+            </motion.p>
 
             {/* Mobile CTA Buttons (placed here for better visual rhythm on small screens) */}
-            <div className="flex flex-col gap-3 w-full mt-3 md:hidden">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col gap-3 w-full mt-3 md:hidden"
+            >
               <a href={getWhatsAppLink(WHATSAPP_MESSAGES.general)} target="_blank" rel="noopener noreferrer" className="w-full">
                 <Button variant="accent" className="w-full text-xs py-3.5 flex items-center justify-center min-h-[44px]" isMuted={isMuted} soundType="cta">
                   Connect on WhatsApp
@@ -209,10 +230,15 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
                   Review Specifications
                 </Button>
               </a>
-            </div>
+            </motion.div>
           </div>
 
-          <div className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 flex justify-start lg:justify-end mt-4 lg:mt-0"
+          >
             <div 
               ref={qaCardRef}
               className="relative bg-black/90 md:bg-obsidian/85 border border-white/10 md:border-white/15 p-3.5 xs:p-4 sm:p-6 md:p-8 backdrop-blur-xl w-full max-w-md overflow-hidden group hover:bg-black/95 hover:border-gold/40 transition-all duration-500 hover:shadow-2xl hover:shadow-black/75 hover:scale-[1.02] rounded-sm"
@@ -248,12 +274,17 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
           
         </div>
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto hidden md:flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-5 md:pt-8 gap-5 mt-6 md:mt-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="relative z-10 w-full max-w-7xl mx-auto hidden md:flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/10 pt-5 md:pt-8 gap-5 mt-6 md:mt-8"
+      >
         
         <div className="flex flex-col sm:flex-row gap-3.5 sm:gap-6 lg:gap-10 text-xs w-full overflow-x-auto no-scrollbar pb-1 md:pb-0">
           <div className="flex items-center gap-3 shrink-0 group cursor-default">
@@ -300,7 +331,7 @@ export const Hero = ({ isMuted = true }: { isMuted?: boolean }) => {
           </a>
         </div>
 
-      </div>
+      </motion.div>
 
       <motion.a 
         href="#about" 

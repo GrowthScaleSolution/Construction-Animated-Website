@@ -6,7 +6,7 @@ export const Logo = () => {
       <div className="flex items-center gap-1.5 xs:gap-2">
         <span className="text-gold font-light transition-transform duration-500 group-hover:rotate-90 text-xs sm:text-sm">[</span>
         <span className="text-[15px] xs:text-lg sm:text-xl md:text-2xl font-bold tracking-[0.18em] xs:tracking-[0.25em] text-white whitespace-nowrap">
-          SHREE UNIYA
+          SHREE UMIYA
         </span>
         <span className="text-gold font-light transition-transform duration-500 group-hover:-rotate-90 text-xs sm:text-sm">]</span>
       </div>

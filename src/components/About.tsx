@@ -75,7 +75,7 @@ export const About: React.FC<AboutProps> = ({ isMuted = true }) => {
               At the core of every structural development is a strict commitment to quality, safety, and long-term value.
             </p>
             <p>
-              Shree Uniya Construction translates raw engineering theory into durable physical frameworks. From certified soil compression loads to laser-verified column alignments, we ensure that every structure conforms to strict civil safety and design baselines in Mumbai's western zones.
+              Shree Umiya Construction translates raw engineering theory into durable physical frameworks. From certified soil compression loads to laser-verified column alignments, we ensure that every structure conforms to strict civil safety and design baselines in Mumbai's western zones.
             </p>
           </motion.div>
 

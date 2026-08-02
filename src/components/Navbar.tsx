@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { Volume2, VolumeX, Menu, X } from 'lucide-react';
 import Logo from '@/components/ui/Logo';
 import Button from '@/components/ui/Button';
@@ -15,6 +16,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   // Monitor scroll position
   useEffect(() => {
@@ -31,11 +33,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
 
   // Section links
   const navLinks = [
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Blueprints', href: '#blueprints' },
-    { name: 'Process', href: '#process' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Services', href: '/services' },
+    { name: 'Project Gallery', href: '/projects' },
+    { name: 'Contact / Site Visit', href: '/contact' },
   ];
 
   return (
@@ -48,7 +50,9 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
     >
       <div className="max-w-7xl mx-auto px-4 xs:px-6 md:px-12 flex justify-between items-center gap-3">
         {/* Branding wordmark */}
-        <Logo />
+        <a href="/" className="block" aria-label="Home">
+          <Logo />
+        </a>
 
         {/* Desktop navigation */}
         <div className="hidden lg:flex items-center gap-8 text-[11px] uppercase tracking-[0.25em] font-sans font-medium text-arch-grey/80">
@@ -56,11 +60,11 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
             <a
               key={link.name}
               href={link.href}
-              className="hover:text-gold transition-colors duration-300 relative py-1 group"
+              className={`transition-colors duration-300 relative py-1 group ${pathname === link.href ? 'text-gold' : 'hover:text-gold'}`}
             >
               {link.name}
-              {/* Sliding gold line under link on hover */}
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gold transition-all duration-300 group-hover:w-full" />
+              {/* Sliding gold line under link on hover or active */}
+              <span className={`absolute bottom-0 left-0 h-0.5 bg-gold transition-all duration-300 ${pathname === link.href ? 'w-full' : 'w-0 group-hover:w-full'}`} />
             </a>
           ))}
         </div>
@@ -136,7 +140,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isMuted, onToggleSound }) => {
                 key={link.name}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-arch-grey hover:text-gold py-2 transition-colors duration-300 border-b border-white/5"
+                className={`py-2 transition-colors duration-300 border-b border-white/5 ${pathname === link.href ? 'text-gold' : 'text-arch-grey hover:text-gold'}`}
               >
                 {link.name}
               </a>

@@ -141,7 +141,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
             </motion.div>
 
             {/* Embedded Google Map */}
-            <div className="bg-card-surf border border-white/15 shadow-2xl shadow-black/80 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group hover:border-gold/30 transition-all duration-500">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-card-surf border border-white/15 shadow-2xl shadow-black/80 relative flex items-center justify-center h-[250px] lg:h-[300px] rounded-sm overflow-hidden group hover:border-gold/30 transition-all duration-500"
+            >
               <iframe 
                  src="https://maps.google.com/maps?q=Nallasopara,+Mumbai&t=m&z=13&output=embed&iwloc=near"
                  width="100%" 
@@ -165,7 +171,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isMuted = true }
                </div>
 
                <div className="absolute inset-0 pointer-events-none border border-white/10" />
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

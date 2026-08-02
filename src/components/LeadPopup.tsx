@@ -76,7 +76,7 @@ export const LeadPopup: React.FC<LeadPopupProps> = ({ isMuted }) => {
     playCTAConfirmSound(isMuted);
   };
 
-  const leadMessage = 'Hello Shree Uniya Construction, I would like to schedule a civil construction consultation and request an estimate for my project.';
+  const leadMessage = 'Hello Shree Umiya Construction, I would like to schedule a civil construction consultation and request an estimate for my project.';
 
   return (
     <AnimatePresence>

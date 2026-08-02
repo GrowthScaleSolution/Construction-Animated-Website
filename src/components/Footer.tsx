@@ -52,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({ isMuted = true }) => {
           <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.263 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.729-1.464L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.884-6.97C16.538 2.034 14.08 1.01 11.472 1.01c-5.462 0-9.902 4.375-9.905 9.802-.001 1.78.48 3.52 1.395 5.093l-1.002 3.66 3.79-.983zm11.233-5.597c-.31-.154-1.834-.894-2.113-.995-.28-.102-.483-.153-.686.153-.203.306-.785.995-.96 1.199-.177.204-.355.23-.665.077-1.13-.566-1.97-1.01-2.76-2.365-.205-.353-.022-.538.154-.712.16-.156.355-.408.533-.612.178-.205.237-.346.355-.578.118-.232.06-.434-.03-.587-.09-.153-.686-1.633-.94-2.245-.247-.598-.5-.516-.686-.525-.178-.009-.38-.01-.583-.01-.203 0-.533.076-.812.378-.28.303-1.066 1.03-1.066 2.51 0 1.48 1.092 2.908 1.245 3.112.152.204 2.15 3.25 5.207 4.545.727.308 1.293.493 1.734.63.73.23 1.396.198 1.922.12.585-.087 1.834-.74 2.088-1.455.253-.715.253-1.327.177-1.455-.076-.127-.28-.203-.59-.358z"/>
         </svg>
       ), 
-      url: getWhatsAppLink('Hello Shree Uniya Construction, I visited your website and would like to connect.'), 
+      url: getWhatsAppLink('Hello Shree Umiya Construction, I visited your website and would like to connect.'), 
       comingSoon: false 
     },
   ];
@@ -136,9 +136,10 @@ export const Footer: React.FC<FooterProps> = ({ isMuted = true }) => {
           >
             <span className="font-display font-semibold text-white text-sm tracking-wide">Quick Links</span>
             <div className="flex flex-col gap-3 text-sm text-arch-grey font-light">
-              <a href="#about" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Brand Philosophy</a>
-              <a href="#blueprints" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Interactive Blueprints</a>
-              <a href="#showcase" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Active Portfolio</a>
+              <a href="/about" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Brand Philosophy</a>
+              <a href="/#blueprints" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Interactive Blueprints</a>
+              <a href="/#showcase" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Active Portfolio</a>
+              <a href="/contact" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Contact Us</a>
             </div>
           </motion.div>
 
@@ -151,9 +152,9 @@ export const Footer: React.FC<FooterProps> = ({ isMuted = true }) => {
           >
             <span className="font-display font-semibold text-white text-sm tracking-wide">Civil Services</span>
             <div className="flex flex-col gap-3 text-sm text-arch-grey font-light">
-              <a href="#services" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Structural RCC Framing</a>
-              <a href="#services" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Foundation Prep</a>
-              <a href="#services" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Structural Masonry</a>
+              <a href="/#services" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Structural RCC Framing</a>
+              <a href="/#services" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Foundation Prep</a>
+              <a href="/#services" className="relative pb-0.5 text-arch-grey hover:text-white transition-colors duration-300 w-max after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-gold after:transition-all after:duration-300">Structural Masonry</a>
             </div>
           </motion.div>
 
@@ -186,7 +187,7 @@ export const Footer: React.FC<FooterProps> = ({ isMuted = true }) => {
           className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-mono text-white/40"
         >
           <div className="flex flex-col md:flex-row gap-2 md:gap-6 items-center text-center md:text-left">
-            <span>© {new Date().getFullYear()} SHREE UNIYA CONSTRUCTION. ALL RIGHTS RESERVED.</span>
+            <span>© {new Date().getFullYear()} SHREE UMIYA CONSTRUCTION. ALL RIGHTS RESERVED.</span>
           </div>
           
           <button 

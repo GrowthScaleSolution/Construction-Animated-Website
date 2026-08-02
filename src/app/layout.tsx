@@ -15,7 +15,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Shree Uniya Construction | Engineering Integrity",
+  title: "Shree Umiya Construction | Engineering Integrity",
   description: "Premium civil construction and structural development services in Nallasopara, Mumbai. Engineering spaces that stand the test of time.",
 };
 
@@ -28,8 +28,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${spaceGrotesk.variable} ${outfit.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
-      <body className="min-h-full flex flex-col bg-obsidian text-white selection:bg-gold selection:text-obsidian">
+      <body 
+        className="min-h-full flex flex-col bg-obsidian text-white selection:bg-gold selection:text-obsidian"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>
